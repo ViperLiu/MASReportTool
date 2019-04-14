@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -244,6 +245,38 @@ namespace MASReportTool
         private void Btn_Save_Click(object sender, RoutedEventArgs e)
         {
             Console.WriteLine(Report.CurrentOpenedFile);
+            //如果檔案存在就直接存檔
+            if (File.Exists(Report.CurrentOpenedFile))
+            {
+                SaveFile(Report.CurrentOpenedFile);
+                return;
+            }
+
+            //檔案不存在就開啟存檔視窗
+            SaveAsNewFile();
+        }
+
+        private void SaveFile(string file)
+        {
+            Console.WriteLine("saved : " + file);
+            JsonFileController json = new JsonFileController(file);
+            json.SaveFile(Report);
+            Report.MarkAsSaved();
+            Report.CurrentOpenedFile = file;
+        }
+
+        private void SaveAsNewFile()
+        {
+            SaveFileDialog saveJsonrDialog = new SaveFileDialog();
+            saveJsonrDialog.Filter = "MAS報告|*.jsonr";
+            saveJsonrDialog.DefaultExt = ".jsonr";
+            saveJsonrDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var result = saveJsonrDialog.ShowDialog();
+            var file = saveJsonrDialog.FileName;
+            if (result == true)
+            {
+                SaveFile(file);
+            }
         }
     }
 }
