@@ -34,9 +34,10 @@
 
     <Grid Background="#FF333333">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -44,7 +45,55 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <Grid Name="NavBar"
+              Grid.Column="0"
+              Grid.RowSpan="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#FF333333" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Gray" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <Button BorderThickness="2"
+                    BorderBrush="White"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Name="Btn_Save"
+                    Click="Btn_Save_Click">
+                <Image Source="/assets/pics/icon_save.png"/>
+            </Button>
+            <Button BorderThickness="2"
+                    BorderBrush="White" 
+                    Grid.Column="0"
+                    Grid.Row="1">
+                <Image Source="/assets/pics/icon_new_file.png"/>
+            </Button>
+            <Button BorderThickness="2"
+                    BorderBrush="White" 
+                    Grid.Column="0"
+                    Grid.Row="2">
+                <Image Source="/assets/pics/icon_output.png"/>
+            </Button>
+        </Grid>
+
         <TreeView Name="trvMenu"
+                  Grid.Column="1"
                   Grid.RowSpan="4"
                   SelectedItemChanged="TreeView_SelectedItemChanged"
                   Style="{StaticResource DarkTheme}">
@@ -62,7 +111,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <GroupBox Header="功能" 
-                  Grid.Column="1" 
+                  Grid.Column="2" 
                   Grid.RowSpan="1" 
                   Margin="5"
                   Style="{StaticResource DarkTheme}">
@@ -128,7 +177,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
                       HorizontalScrollBarVisibility="Disabled"
                       Grid.Row="1" 
-                      Grid.Column="1" 
+                      Grid.Column="2" 
                       Grid.RowSpan="3"
                       Style="{StaticResource DarkTheme}">
             <Grid Margin="5">
@@ -222,9 +271,8 @@
                 </ItemsControl>
             </Grid>
         </ScrollViewer>
-        
         <GroupBox Header="檢測結果"
-                  Grid.Column="2"
+                  Grid.Column="3"
                   Grid.RowSpan="4"
                   Margin="3"
                   Style="{StaticResource DarkTheme}"
@@ -251,12 +299,10 @@
                 </Border>
             </StackPanel>
         </GroupBox>
-
-        
         <Grid Margin="5"
               Grid.Column="0"
               Grid.RowSpan="4"
-              Grid.ColumnSpan="3"
+              Grid.ColumnSpan="4"
               Name="PictureGrid"
               Visibility="{Binding IsPicturePanelShown, Converter={StaticResource VisibilityBoolConverter}}"
               Background="#AA000000"

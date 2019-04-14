@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -95,7 +95,7 @@ namespace MASReportTool
             this.CurrentSelectedRule = Report.RuleList[item.Title];
             SubRules.ItemsSource = this.CurrentSelectedRule.SubRuleList;
             SubRuleResults.ItemsSource = this.CurrentSelectedRule.SubRuleList;
-            SubRules.DataContext = this.CurrentSelectedRule;
+            //SubRules.DataContext = this.CurrentSelectedRule;
             Condition.DataContext = this.CurrentSelectedRule;
             
         }
@@ -239,6 +239,11 @@ namespace MASReportTool
                 ruleContents.Add(rule.Key, r);
             }
             return ruleContents;
+        }
+
+        private void Btn_Save_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(Report.CurrentOpenedFile);
         }
     }
 }
