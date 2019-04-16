@@ -52,7 +52,6 @@ namespace MASReportTool
             this.Text = "";
             this.Pictures = new ObservableCollection<Picture>();
             this.Pictures.CollectionChanged += Pictures_CollectionChanged;
-            this.PropertyChanged += MASData.Changed;
         }
 
         private void Pictures_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -91,6 +90,14 @@ namespace MASReportTool
             {
                 this.Pictures[i].Index = i;
             }
+            OnPropertyChanged("Pictures");
+        }
+
+        public void DeletePicture(int targetIndex)
+        {
+            this.Pictures.RemoveAt(targetIndex);
+            this.UpdatePicturesIndex();
+            OnPropertyChanged("Pictures");
         }
 
         public void SwapPictures(int indexA, int indexB)
@@ -104,10 +111,11 @@ namespace MASReportTool
                 this.Pictures[indexA].Index = indexA;
                 this.Pictures[indexB].Index = indexB;
             }
-            catch(ArgumentOutOfRangeException e)
+            catch(ArgumentOutOfRangeException)
             {
                 Console.WriteLine("asdf");
             }
+            OnPropertyChanged("Pictures");
         }
 
         public void AddPictures(string[] files)
@@ -118,8 +126,17 @@ namespace MASReportTool
                 var extensionNotAllowed = extension != ".jpg" && extension != ".jpeg" && extension != ".png";
                 if (extensionNotAllowed)
                     continue;
-                this.Pictures.Add(new Picture(startIndex, files[filesIndex]));
+
+                var picture = new Picture(startIndex, files[filesIndex]);
+                picture.PropertyChanged += this.Picture_PropertyChanged;
+
+                this.Pictures.Add(picture);
             }
+        }
+
+        private void Picture_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("Pictures");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

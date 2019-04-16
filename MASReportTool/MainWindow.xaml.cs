@@ -64,10 +64,38 @@ namespace MASReportTool
             get { return _CurrentSelectedSubRule; }
             set
             {
-                if(value != _CurrentSelectedSubRule)
+                if (value != _CurrentSelectedSubRule)
                 {
                     _CurrentSelectedSubRule = value;
                     OnPropertyChanged("CurrentSelectedSubRule");
+                }
+            }
+        }
+
+        private string _currentRuleNumber;
+        public string CurrentRuleNumber
+        {
+            get { return _currentRuleNumber; }
+            set
+            {
+                if(value != _currentRuleNumber)
+                {
+                    _currentRuleNumber = value;
+                    OnPropertyChanged("CurrentRuleNumber");
+                }
+            }
+        }
+
+        private int _currentSubRuleIndex;
+        public int CurrentSubRuleIndex
+        {
+            get { return _currentSubRuleIndex; }
+            set
+            {
+                if (value != _currentSubRuleIndex)
+                {
+                    _currentSubRuleIndex = value;
+                    OnPropertyChanged("CurrentSubRuleIndex");
                 }
             }
         }
@@ -93,42 +121,44 @@ namespace MASReportTool
             var item = treeview.SelectedItem as TreeViewItems;
             if (item.Level != 1)
                 return;
+            this.CurrentRuleNumber = item.Title;
             this.CurrentSelectedRule = Report.RuleList[item.Title];
             SubRules.ItemsSource = this.CurrentSelectedRule.SubRuleList;
             SubRuleResults.ItemsSource = this.CurrentSelectedRule.SubRuleList;
-            //SubRules.DataContext = this.CurrentSelectedRule;
             Condition.DataContext = this.CurrentSelectedRule;
+            CurrentSelectedPic = null;
             
         }
 
         private void Btn_Accept_Click(object sender, RoutedEventArgs e)
         {
-            this.CurrentSelectedRule.Accept();
+            CurrentSelectedRule.Accept();
         }
 
         private void Btn_Fail_Click(object sender, RoutedEventArgs e)
         {
-            this.CurrentSelectedRule.Fail();
+            CurrentSelectedRule.Fail();
         }
 
         private void Btn_NotFit_Click(object sender, RoutedEventArgs e)
         {
-            var text = this.CurrentSelectedRule.Content.NotFitText;
-            this.CurrentSelectedRule.NotFit(text);
+            CurrentSelectedRule.NotFit();
         }
 
         private void Rb_SubRule_Accept_Click(object sender, RoutedEventArgs e)
         {
             var rb = sender as RadioButton;
             var index = (int)rb.Tag - 1;
-            this.CurrentSelectedRule.SubRuleList[index].Accept();
+            CurrentSelectedSubRule = CurrentSelectedRule.SubRuleList[index];
+            CurrentSelectedSubRule.Accept();
         }
 
         private void Rb_SubRule_Fail_Click(object sender, RoutedEventArgs e)
         {
             var rb = sender as RadioButton;
             var index = (int)rb.Tag - 1;
-            this.CurrentSelectedRule.SubRuleList[index].Fail();
+            CurrentSelectedSubRule = CurrentSelectedRule.SubRuleList[index];
+            CurrentSelectedSubRule.Fail();
         }
 
         private void Btn_Pictures_Click(object sender, RoutedEventArgs e)
@@ -137,7 +167,8 @@ namespace MASReportTool
             var number = (int)btn.Tag;
             var index = number - 1;
             IsPicturePanelShown = true;
-            CurrentSelectedSubRule = this.CurrentSelectedRule.SubRuleList[index];
+            CurrentSubRuleIndex = index;
+            CurrentSelectedSubRule = CurrentSelectedRule.SubRuleList[index];
             PicturesPanel.ItemsSource = CurrentSelectedSubRule.Pictures;
         }
 
@@ -174,15 +205,13 @@ namespace MASReportTool
             var thumbnail = sender as Image;
             var index = (int)thumbnail.Tag;
             CurrentSelectedPic = CurrentSelectedSubRule.Pictures[index];
-
         }
 
         private void CM_DeletePic_Click(object sender, RoutedEventArgs e)
         {
             var cmItem = sender as MenuItem;
             var index = (int)cmItem.Tag;
-            CurrentSelectedSubRule.Pictures.RemoveAt(index);
-            CurrentSelectedSubRule.UpdatePicturesIndex();
+            CurrentSelectedSubRule.DeletePicture(index);
         }
 
         private void AddPicture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

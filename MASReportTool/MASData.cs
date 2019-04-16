@@ -49,7 +49,7 @@ namespace MASReportTool
             if (e.PropertyName == "TitleString" || e.PropertyName == "CurrentOpenedFile")
                 return;
 
-            Report.MarkAsNotSaved();
+            //Report.MarkAsNotSaved(ruleNumber);
         }
     }
 }

@@ -272,6 +272,21 @@ namespace MASReportTool
             }
         }
 
+        private bool _isSaved = false;
+        [JsonIgnore]
+        public bool IsSaved
+        {
+            get { return _isSaved; }
+            set
+            {
+                if(value != _isSaved)
+                {
+                    _isSaved = value;
+                    OnPropertyChanged("IsSaved");
+                }
+            }
+        }
+
         public Dictionary<string, RuleResults> RuleList;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -288,29 +303,47 @@ namespace MASReportTool
             foreach(var rule in contents)
             {
                 RuleResults result = new RuleResults(rule.Value);
+                result.PropertyChanged += this.Result_PropertyChanged;
                 ushort subRuleNumber = 0;
                 foreach(var sub in rule.Value.SubRuleContentsList)
                 {
                     SubRuleResult subResult = new SubRuleResult(sub);
+                    subResult.PropertyChanged += this.SubResult_PropertyChanged; ;
                     result.SubRuleList.Add(subResult);
                     subRuleNumber++;
                 }
                 this.RuleList.Add(rule.Key, result);
+                
             }
 
             this.CurrentOpenedFile = "*未儲存的報告.jsonr";
-            this.PropertyChanged += MASData.Changed;
+            this.PropertyChanged += this.Report_PropertyChanged; ;
         }
 
-        public void MarkAsNotSaved()
+        private void Report_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            TitleString = TitleString.Replace("*", "");
-            TitleString = "*" + TitleString;
+            this.MarkAsNotSaved(e.PropertyName);
+        }
+
+        private void Result_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.MarkAsNotSaved(e.PropertyName);
+        }
+
+        private void SubResult_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.MarkAsNotSaved(e.PropertyName);
+        }
+
+        public void MarkAsNotSaved(string name = "")
+        {
+            this.IsSaved = false;
+            Console.WriteLine("Mark As Not Saved : " + name);
         }
 
         public void MarkAsSaved()
         {
-            TitleString = TitleString.Replace("*", "");
+            this.IsSaved = true;
         }
 
         public void GetDates(string start, string finish, string report)
@@ -319,6 +352,8 @@ namespace MASReportTool
             this.FinishDate = finish;
             this.ReportDate = report;
         }
+
+        #region BUILD REPORT
 
         public void BuildReport(string buildLocation)
         {
@@ -684,5 +719,7 @@ namespace MASReportTool
 
             return newDateString.ToString();
         }
+
+        #endregion
     }
 }

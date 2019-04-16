@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -36,12 +37,6 @@ namespace MASReportTool
             this.Content = content;
             this.FinalResult = "undetermin";
             this.SubRuleList = new List<SubRuleResult>();
-            this.PropertyChanged += MASData.Changed;
-        }
-
-        private void Pictures_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged("Pictures");
         }
 
         public void Accept()
@@ -54,7 +49,7 @@ namespace MASReportTool
             this.FinalResult = "fail";
         }
 
-        public void NotFit(string notFitText)
+        public void NotFit()
         {
             this.FinalResult = "notfit";
 
@@ -63,7 +58,7 @@ namespace MASReportTool
                 this.SubRuleList[i].NotFit();
             }
 
-            this.SubRuleList[0].Text = notFitText;
+            this.SubRuleList[0].Text = this.Content.NotFitText;
         }
 
         public void DontTest()
@@ -80,26 +75,7 @@ namespace MASReportTool
                 sub.Reset();
             }
         }
-
-        public void SaveResultText(string text)
-        {
-            text = text.Replace("\r", string.Empty).Replace("\n", string.Empty);
-            string[] stringSeparators = new string[] { ">>" };
-            var result = text.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-            for (var i = 0; i < this.SubRuleList.Count; i++)
-            {
-                try
-                {
-                    this.SubRuleList[i].Text = result[i];
-                    Console.WriteLine(i + ":" + result[i]);
-                }
-                catch(IndexOutOfRangeException)
-                {
-                    this.SubRuleList[i].Text = "";
-                }
-            }
-        }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)

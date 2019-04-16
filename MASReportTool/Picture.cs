@@ -61,10 +61,8 @@ namespace MASReportTool
         {
             this.Index = index;
             this.FullPath = path;
-            //this.FullPath = MASData.ProjectInfo.GetFullPath(ProjectPath.PicturesFolder) + "\\" + path;
             this.Caption = caption;
             this.Ratio = -1;
-            this.PropertyChanged += MASData.Changed;
         }
 
         public void AddCaption(string text)
