@@ -66,11 +66,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IsSavedColorConverter.cs" />
     <Compile Include="JsonFileController.cs" />
     <Compile Include="MASData.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="Report.cs" />
+    <Compile Include="ResultStringBoolConverter.cs" />
     <Compile Include="ResultStringConverter.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="RuleContents.cs" />

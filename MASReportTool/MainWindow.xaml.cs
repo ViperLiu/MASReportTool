@@ -108,6 +108,8 @@ namespace MASReportTool
             List<TreeViewItems> items = TreeViewItems.GetTreeViewItems();
             trvMenu.ItemsSource = items;
             PictureGrid.DataContext = this;
+            NavBar.DataContext = Report;
+
         }
         
         private void Button_Click(object sender, RoutedEventArgs e)

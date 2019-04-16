@@ -241,20 +241,20 @@ namespace MASReportTool
         private string DocxLocation;
         private DocX TemplateDocx;
 
-        private string _TitleString;
-        [JsonIgnore]
-        public string TitleString
-        {
-            get { return _TitleString; }
-            set
-            {
-                if(_TitleString != value)
-                {
-                    _TitleString = value;
-                    OnPropertyChanged("TitleString");
-                }
-            }
-        }
+        //private string _TitleString;
+        //[JsonIgnore]
+        //public string TitleString
+        //{
+        //    get { return _TitleString; }
+        //    set
+        //    {
+        //        if(_TitleString != value)
+        //        {
+        //            _TitleString = value;
+        //            OnPropertyChanged("TitleString");
+        //        }
+        //    }
+        //}
 
         private string _CurrentOpenedFile;
         [JsonIgnore]
@@ -266,9 +266,7 @@ namespace MASReportTool
             }
             set
             {
-                _TitleString = value + string.Format(" - v{0}", MASData.Version);
                 _CurrentOpenedFile = value;
-                OnPropertyChanged("CurrentOpenedFile");
             }
         }
 
@@ -322,6 +320,8 @@ namespace MASReportTool
 
         private void Report_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == "IsSaved")
+                return;
             this.MarkAsNotSaved(e.PropertyName);
         }
 
