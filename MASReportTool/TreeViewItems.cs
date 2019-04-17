@@ -15,37 +15,34 @@ namespace MASReportTool
         public int Level { get; private set; }
         public string Title { get; private set; }
         public ObservableCollection<TreeViewItems> Items { get; }
+        public RuleResults RuleResult { get; private set; }
 
-        public TreeViewItems()
+        public static List<TreeViewItems> GetTreeViewItems(Report report)
         {
-            this.Items = new ObservableCollection<TreeViewItems>();
-        }
-
-        public static List<TreeViewItems> GetTreeViewItems(int targetClass)
-        {
-            JObject o;
-
-            using (StreamReader reader = File.OpenText("assets\\基準30.json"))
-            {
-                o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-            }
-
             List<TreeViewItems> items = new List<TreeViewItems>();
             List<string> parentList = new List<string>();
-            foreach (var rule in o)
+            foreach (var rule in report.RuleList)
             {
-                var str = rule.Key;
-                var parent = str.Remove(str.Length - 2);
-                var ruleClass = (int)rule.Value["Class"];
-                Console.WriteLine(str);
-                Console.WriteLine(parent);
-                Console.WriteLine(rule.Value["Class"]);
-                if(!Report.ClassFilter(targetClass, ruleClass))
+                var ruleResult = rule.Value;
+                var ruleNumber = rule.Key;
+                var parent = ruleNumber.Remove(ruleNumber.Length - 2);
+                var ruleClass = ruleResult.Content.Class;
+                if(!Report.ClassFilter(report.Class, ruleClass))
                 {
                     continue;
                 }
-                TreeViewItems parentItem = new TreeViewItems { Title = parent, Level = 0 };
-                TreeViewItems childItem = new TreeViewItems { Title = str, Level = 1 };
+                TreeViewItems parentItem = new TreeViewItems
+                {
+                    Title = parent,
+                    Level = 0,
+                    RuleResult = null
+                };
+                TreeViewItems childItem = new TreeViewItems
+                {
+                    Title = ruleNumber,
+                    Level = 1,
+                    RuleResult = ruleResult
+                };
                 if (!parentList.Contains(parent))
                 {
                     parentItem.Items.Add(childItem);
@@ -57,7 +54,6 @@ namespace MASReportTool
                     items.Last().Items.Add(childItem);
                 }
             }
-            Console.WriteLine(items.Count);
             return items;
         }
 
