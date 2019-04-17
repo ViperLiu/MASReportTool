@@ -37,10 +37,14 @@
 
     <Grid Background="#FF333333">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="6*" />
-            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="1*" 
+                              MaxWidth="70"/>
+            <ColumnDefinition Width="3*"
+                              MaxWidth="200"/>
+            <ColumnDefinition Width="6*"
+                              MaxWidth="450" />
+            <ColumnDefinition Width="7*"
+                              MaxWidth="800"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -53,9 +57,12 @@
               Grid.Column="0"
               Grid.RowSpan="4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*" 
+                               MaxHeight="70"/>
+                <RowDefinition Height="*" 
+                               MaxHeight="70"/>
+                <RowDefinition Height="*" 
+                               MaxHeight="70"/>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
