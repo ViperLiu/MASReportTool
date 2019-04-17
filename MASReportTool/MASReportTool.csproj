@@ -123,6 +123,15 @@
     <Resource Include="assets\pics\icon_output.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="assets\pics\icon_accept.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\pics\icon_fail.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\pics\icon_notfit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="assets\基準30.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
