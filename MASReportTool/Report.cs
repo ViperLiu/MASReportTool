@@ -110,7 +110,7 @@ namespace MASReportTool
             }
         }
 
-        private int _Class = 0;
+        private int _Class = 1;
         public int Class
         {
             get { return _Class; }
@@ -351,6 +351,42 @@ namespace MASReportTool
             this.StartDate = start;
             this.FinishDate = finish;
             this.ReportDate = report;
+        }
+
+
+        /// <summary>
+        /// 判定是否需要檢測
+        /// </summary>
+        /// <param name="targetClass">檢測級別 ( 甲、乙、丙 )</param>
+        /// <param name="ruleClass">基準所屬的檢測級別</param>
+        /// <returns>true則需要檢測，false則不用</returns>
+        public static bool ClassFilter(int targetClass, int ruleClass)
+        {
+            if (ruleClass == 7)
+                return true;
+
+            if (targetClass == 1)
+            {
+                if (ruleClass == 1 || ruleClass == 3 || ruleClass == 5)
+                {
+                    return true;
+                }
+            }
+            else if (targetClass == 2)
+            {
+                if (ruleClass == 2 || ruleClass == 3 || ruleClass == 6)
+                {
+                    return true;
+                }
+            }
+            else if (targetClass == 3)
+            {
+                if (ruleClass == 4 || ruleClass == 5 || ruleClass == 6)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #region BUILD REPORT
