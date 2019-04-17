@@ -21,7 +21,7 @@ namespace MASReportTool
             this.Items = new ObservableCollection<TreeViewItems>();
         }
 
-        public static List<TreeViewItems> GetTreeViewItems()
+        public static List<TreeViewItems> GetTreeViewItems(int targetClass)
         {
             JObject o;
 
@@ -36,8 +36,14 @@ namespace MASReportTool
             {
                 var str = rule.Key;
                 var parent = str.Remove(str.Length - 2);
+                var ruleClass = (int)rule.Value["Class"];
                 Console.WriteLine(str);
                 Console.WriteLine(parent);
+                Console.WriteLine(rule.Value["Class"]);
+                if(!Report.ClassFilter(targetClass, ruleClass))
+                {
+                    continue;
+                }
                 TreeViewItems parentItem = new TreeViewItems { Title = parent, Level = 0 };
                 TreeViewItems childItem = new TreeViewItems { Title = str, Level = 1 };
                 if (!parentList.Contains(parent))
@@ -54,5 +60,6 @@ namespace MASReportTool
             Console.WriteLine(items.Count);
             return items;
         }
+
     }
 }
