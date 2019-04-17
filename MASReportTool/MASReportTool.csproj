@@ -76,6 +76,7 @@
     <Compile Include="ResultClassRadioBtnConverter.cs" />
     <Compile Include="ResultStringBoolConverter.cs" />
     <Compile Include="ResultStringConverter.cs" />
+    <Compile Include="ResultStringIconConverter.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="RuleContents.cs" />
     <Compile Include="RuleResults.cs" />
