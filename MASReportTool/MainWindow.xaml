@@ -28,6 +28,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <local:ResultClassRadioBtnConverter x:Key="ResultClassRadioBtnConverter" />
         <local:IsSavedColorConverter x:Key="IsSavedColorConverter" />
         <local:ResultStringBoolConverter x:Key="ResultStringBoolConverter" />
         <local:ResultStringConverter x:Key="ResultStringConverter" />
@@ -98,24 +99,59 @@
             </Button>
         </Grid>
 
-        <TreeView Name="trvMenu"
-                  Grid.Column="1"
-                  Grid.RowSpan="4"
-                  SelectedItemChanged="TreeView_SelectedItemChanged"
-                  Style="{StaticResource DarkTheme}">
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
-                    <Setter Property="IsExpanded" Value="True"/>
-                    <Setter Property="Foreground" Value="Ivory"/>
-                </Style>
-            </TreeView.ItemContainerStyle>
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type local:TreeViewItems}" 
-                                          ItemsSource="{Binding Items}">
-                    <TextBlock Text="{Binding Title}" />
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
+        <DockPanel Grid.Column="1"
+                    Grid.RowSpan="4">
+            <Border BorderBrush="Ivory"
+                    BorderThickness="1"
+                    DockPanel.Dock="Top">
+                <Grid Name="ClassSelector">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Content="甲級"
+                                 Name="Rb_Class1"
+                                 GroupName="ClassSelector"
+                                 Grid.Column="0"
+                                 IsChecked="{Binding Class, Mode=TwoWay, Converter={StaticResource ResultClassRadioBtnConverter}, ConverterParameter=1}"
+                                 Foreground="Ivory"
+                                 Checked="Rb_Class_Checked"/>
+                    <RadioButton Content="乙級"
+                                 Name="Rb_Class2"
+                                 GroupName="ClassSelector"
+                                 Grid.Column="1"
+                                 IsChecked="{Binding Class, Mode=TwoWay, Converter={StaticResource ResultClassRadioBtnConverter}, ConverterParameter=2}"
+                                 Foreground="Ivory"
+                                 Checked="Rb_Class_Checked"/>
+                    <RadioButton Content="丙級"
+                                 Name="Rb_Class3"
+                                 GroupName="ClassSelector"
+                                 Grid.Column="2"
+                                 IsChecked="{Binding Class, Mode=TwoWay, Converter={StaticResource ResultClassRadioBtnConverter}, ConverterParameter=3}"
+                                 Foreground="Ivory"
+                                 Checked="Rb_Class_Checked"/>
+                </Grid>
+            </Border>
+            <TreeView Name="trvMenu"
+                      DockPanel.Dock="Bottom"
+                      SelectedItemChanged="TreeView_SelectedItemChanged"
+                      Style="{StaticResource DarkTheme}">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="IsExpanded" Value="True"/>
+                        <Setter Property="Foreground" Value="Ivory"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate 
+                            DataType="{x:Type local:TreeViewItems}" 
+                            ItemsSource="{Binding Items}">
+                        <TextBlock Text="{Binding Title}"/>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </DockPanel>
         <GroupBox Header="功能" 
                   Grid.Column="2" 
                   Grid.RowSpan="1" 
