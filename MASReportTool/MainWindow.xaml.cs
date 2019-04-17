@@ -105,10 +105,11 @@ namespace MASReportTool
         public MainWindow()
         {
             InitializeComponent();
-            List<TreeViewItems> items = TreeViewItems.GetTreeViewItems();
+            List<TreeViewItems> items = TreeViewItems.GetTreeViewItems(Report.Class);
             trvMenu.ItemsSource = items;
             PictureGrid.DataContext = this;
             NavBar.DataContext = Report;
+            ClassSelector.DataContext = Report;
 
         }
         
@@ -308,6 +309,12 @@ namespace MASReportTool
             {
                 SaveFile(file);
             }
+        }
+
+        private void Rb_Class_Checked(object sender, RoutedEventArgs e)
+        {
+            List<TreeViewItems> items = TreeViewItems.GetTreeViewItems(Report.Class);
+            trvMenu.ItemsSource = items;
         }
     }
 }
