@@ -108,7 +108,8 @@ namespace MASReportTool
             List<TreeViewItems> items = TreeViewItems.GetTreeViewItems(Report);
             trvMenu.ItemsSource = items;
             PictureGrid.DataContext = this;
-            NavBar.DataContext = Report;
+            NavBar.DataContext = new FunctionBarViewModel(Report);
+
             ClassSelector.DataContext = Report;
 
         }

@@ -83,12 +83,12 @@
             </Grid.Resources>
             <Button BorderThickness="2"
                     BorderBrush="White"
-                    Background="{Binding IsSaved, Mode=OneWay, Converter={StaticResource IsSavedColorConverter}}"
+                    Background="{Binding Report.IsSaved, Mode=OneWay, Converter={StaticResource IsSavedColorConverter}}"
                     Grid.Column="0"
                     Grid.Row="0"
                     Name="Btn_Save"
                     ToolTip="儲存進度"
-                    Click="Btn_Save_Click">
+                    Command="{Binding SaveFile}">
                 <Image Source="/assets/pics/icon_save.png"/>
             </Button>
             <Button BorderThickness="2"
