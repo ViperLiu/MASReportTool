@@ -67,11 +67,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FunctionBarViewModel.cs" />
     <Compile Include="IsSavedColorConverter.cs" />
     <Compile Include="JsonFileController.cs" />
     <Compile Include="MASData.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="ProjectInfo.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="ResultClassRadioBtnConverter.cs" />
     <Compile Include="ResultStringBoolConverter.cs" />
