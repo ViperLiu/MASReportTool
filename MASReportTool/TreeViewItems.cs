@@ -14,7 +14,7 @@ namespace MASReportTool
     {
         public int Level { get; private set; }
         public string Title { get; private set; }
-        public ObservableCollection<TreeViewItems> Items { get; }
+        public ObservableCollection<TreeViewItems> Items { get; private set; }
         public RuleResults RuleResult { get; private set; }
 
         public static List<TreeViewItems> GetTreeViewItems(Report report)
@@ -35,7 +35,8 @@ namespace MASReportTool
                 {
                     Title = parent,
                     Level = 0,
-                    RuleResult = null
+                    RuleResult = null,
+                    Items = new ObservableCollection<TreeViewItems>()
                 };
                 TreeViewItems childItem = new TreeViewItems
                 {
