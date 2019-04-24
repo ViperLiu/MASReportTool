@@ -105,7 +105,7 @@ namespace MASReportTool
         public MainWindow()
         {
             InitializeComponent();
-            List<TreeViewItems> items = TreeViewItems.GetTreeViewItems(Report);
+            List<TreeViewItemsViewModel> items = TreeViewItemsViewModel.GetTreeViewItems(Report);
             trvMenu.ItemsSource = items;
             PictureGrid.DataContext = this;
             NavBar.DataContext = new FunctionBarViewModel(Report);
@@ -122,7 +122,7 @@ namespace MASReportTool
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var treeview = sender as TreeView;
-            var item = treeview.SelectedItem as TreeViewItems;
+            var item = treeview.SelectedItem as TreeViewItemsViewModel;
             if (item.Level != 1)
                 return;
             this.CurrentRuleNumber = item.Title;
@@ -314,7 +314,7 @@ namespace MASReportTool
 
         private void Rb_Class_Checked(object sender, RoutedEventArgs e)
         {
-            List<TreeViewItems> items = TreeViewItems.GetTreeViewItems(Report);
+            List<TreeViewItemsViewModel> items = TreeViewItemsViewModel.GetTreeViewItems(Report);
             trvMenu.ItemsSource = items;
         }
     }

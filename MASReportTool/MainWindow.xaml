@@ -155,7 +155,7 @@
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate 
-                            DataType="{x:Type local:TreeViewItems}" 
+                            DataType="{x:Type local:TreeViewItemsViewModel}" 
                             ItemsSource="{Binding Items}">
                         <WrapPanel>
                             <TextBlock Text="{Binding Title}"/>

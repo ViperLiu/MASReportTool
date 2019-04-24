@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace MASReportTool
 {
-    class TreeViewItems
+    class TreeViewItemsViewModel
     {
         public int Level { get; private set; }
         public string Title { get; private set; }
-        public ObservableCollection<TreeViewItems> Items { get; private set; }
+        public ObservableCollection<TreeViewItemsViewModel> Items { get; private set; }
         public RuleResults RuleResult { get; private set; }
 
-        public static List<TreeViewItems> GetTreeViewItems(Report report)
+        public static List<TreeViewItemsViewModel> GetTreeViewItems(Report report)
         {
-            List<TreeViewItems> items = new List<TreeViewItems>();
+            List<TreeViewItemsViewModel> items = new List<TreeViewItemsViewModel>();
             List<string> parentList = new List<string>();
             foreach (var rule in report.RuleList)
             {
@@ -31,14 +31,14 @@ namespace MASReportTool
                 {
                     continue;
                 }
-                TreeViewItems parentItem = new TreeViewItems
+                TreeViewItemsViewModel parentItem = new TreeViewItemsViewModel
                 {
                     Title = parent,
                     Level = 0,
                     RuleResult = null,
-                    Items = new ObservableCollection<TreeViewItems>()
+                    Items = new ObservableCollection<TreeViewItemsViewModel>()
                 };
-                TreeViewItems childItem = new TreeViewItems
+                TreeViewItemsViewModel childItem = new TreeViewItemsViewModel
                 {
                     Title = ruleNumber,
                     Level = 1,
