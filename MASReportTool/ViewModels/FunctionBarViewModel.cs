@@ -24,7 +24,7 @@ namespace MASReportTool.ViewModels
             get { return new RelayCommand(SaveFileExecute, CanSaveFileExecute); }
         }
 
-        void SaveFileExecute()
+        void SaveFileExecute(object parameter)
         {
             Console.WriteLine(Report.CurrentOpenedFile);
             //如果檔案存在就直接存檔
