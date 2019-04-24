@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace MASReportTool
+namespace MASReportTool.ViewModels
 {
     class FunctionBarViewModel
     { 
