@@ -85,6 +85,7 @@
     <Compile Include="SubRuleContents.cs" />
     <Compile Include="SubRuleResult.cs" />
     <Compile Include="ViewModels\PicturePageViewModel.cs" />
+    <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\TreeViewItemsViewModel.cs" />
     <Compile Include="ValueConverters\VisibilityBoolConverter.cs" />
     <Page Include="MainWindow.xaml">

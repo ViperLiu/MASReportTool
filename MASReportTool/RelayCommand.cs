@@ -5,10 +5,10 @@ namespace MASReportTool
 {
     internal class RelayCommand : ICommand
     {
-        private readonly Action _execute;
+        private readonly Action<object> _execute;
         private readonly Func<bool> _canExecute;
 
-        public RelayCommand(Action saveFileExecute, Func<bool> canSaveFileExecute)
+        public RelayCommand(Action<object> saveFileExecute, Func<bool> canSaveFileExecute)
         {
             _execute = saveFileExecute;
             _canExecute = canSaveFileExecute;
@@ -37,7 +37,7 @@ namespace MASReportTool
 
         public void Execute(object parameter)
         {
-            _execute();
+            _execute(parameter);
         }
     }
 }
