@@ -1,9 +1,11 @@
-﻿<Window x:Class="MASReportTool.MainWindow"
+<Window x:Class="MASReportTool.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MASReportTool"
+        xmlns:converter="clr-namespace:MASReportTool.ValueConverters"
+        xmlns:viewmodel="clr-namespace:MASReportTool.ViewModels"
         mc:Ignorable="d"
         Title="MASReportTool" 
         Height="674" 
@@ -28,12 +30,12 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <local:ResultStringIconConverter x:Key="ResultStringIconConverter" />
-        <local:ResultClassRadioBtnConverter x:Key="ResultClassRadioBtnConverter" />
-        <local:IsSavedColorConverter x:Key="IsSavedColorConverter" />
-        <local:ResultStringBoolConverter x:Key="ResultStringBoolConverter" />
-        <local:ResultStringConverter x:Key="ResultStringConverter" />
-        <local:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
+        <converter:ResultStringIconConverter x:Key="ResultStringIconConverter" />
+        <converter:ResultClassRadioBtnConverter x:Key="ResultClassRadioBtnConverter" />
+        <converter:IsSavedColorConverter x:Key="IsSavedColorConverter" />
+        <converter:ResultStringBoolConverter x:Key="ResultStringBoolConverter" />
+        <converter:ResultStringConverter x:Key="ResultStringConverter" />
+        <converter:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
     </Window.Resources>
 
     <Grid Background="#FF333333">
@@ -155,7 +157,7 @@
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate 
-                            DataType="{x:Type local:TreeViewItemsViewModel}" 
+                            DataType="{x:Type viewmodel:TreeViewItemsViewModel}" 
                             ItemsSource="{Binding Items}">
                         <WrapPanel>
                             <TextBlock Text="{Binding Title}"/>

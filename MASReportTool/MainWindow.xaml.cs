@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+using MASReportTool.ViewModels;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
