@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -312,6 +314,29 @@ namespace MASReportTool.ViewModels
             }
         }
 
+        public ICommand SaveJsonFile
+        {
+            get
+            {
+                return new RelayCommand(
+                    (object obj) => {
+                        Console.WriteLine(Report.CurrentOpenedFile);
+                        //如果檔案存在就直接存檔
+                        if (File.Exists(Report.CurrentOpenedFile))
+                        {
+                            SaveFile(Report.CurrentOpenedFile);
+                            return;
+                        }
+
+                        //檔案不存在就開啟存檔視窗
+                        SaveAsNewFile();
+                        Console.WriteLine("Save Json File");
+                    },
+                    () => { return true; }
+                    );
+            }
+        }
+
         public MainViewModel()
         {
             var ruleContent = LoadRuleContents();
@@ -373,6 +398,29 @@ namespace MASReportTool.ViewModels
             Console.WriteLine("Drop");
             var files = ((string[])e.Data.GetData(DataFormats.FileDrop));
             CurrentSelectedSubRule.AddPictures(files);
+        }
+
+        private void SaveFile(string file)
+        {
+            Console.WriteLine("saved : " + file);
+            JsonFileController json = new JsonFileController(file);
+            json.SaveFile(Report);
+            Report.MarkAsSaved();
+            Report.CurrentOpenedFile = file;
+        }
+
+        private void SaveAsNewFile()
+        {
+            SaveFileDialog saveJsonrDialog = new SaveFileDialog();
+            saveJsonrDialog.Filter = "MAS報告|*.jsonr";
+            saveJsonrDialog.DefaultExt = ".jsonr";
+            saveJsonrDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var result = saveJsonrDialog.ShowDialog();
+            var file = saveJsonrDialog.FileName;
+            if (result == true)
+            {
+                SaveFile(file);
+            }
         }
     }
 }

@@ -95,7 +95,8 @@
                     Grid.Column="0"
                     Grid.Row="0"
                     Name="Btn_Save"
-                    ToolTip="儲存進度">
+                    ToolTip="儲存進度"
+                    Command="{Binding SaveJsonFile}">
                 <Image Source="/assets/pics/icon_save.png"/>
             </Button>
             <Button BorderThickness="2"
