@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:local="clr-namespace:MASReportTool"
         xmlns:converter="clr-namespace:MASReportTool.ValueConverters"
         xmlns:viewmodel="clr-namespace:MASReportTool.ViewModels"
@@ -13,6 +15,7 @@
         MinHeight="674" 
         MinWidth="937">
     <Window.Resources>
+        <local:BindingProxy x:Key="proxy" Data="{Binding .}" />
         <Style x:Key="DarkTheme" TargetType="{x:Type Control}">
             <Setter Property="Foreground" Value="Ivory"/>
             <Setter Property="Background" Value="#FF333333"/>
@@ -37,6 +40,9 @@
         <converter:ResultStringConverter x:Key="ResultStringConverter" />
         <converter:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
     </Window.Resources>
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
 
     <Grid Background="#FF333333">
         <Grid.ColumnDefinitions>
@@ -89,8 +95,7 @@
                     Grid.Column="0"
                     Grid.Row="0"
                     Name="Btn_Save"
-                    ToolTip="儲存進度"
-                    Command="{Binding SaveFile}">
+                    ToolTip="儲存進度">
                 <Image Source="/assets/pics/icon_save.png"/>
             </Button>
             <Button BorderThickness="2"
@@ -124,29 +129,49 @@
                                  Name="Rb_Class1"
                                  GroupName="ClassSelector"
                                  Grid.Column="0"
-                                 IsChecked="{Binding Class, Mode=TwoWay, Converter={StaticResource ResultClassRadioBtnConverter}, ConverterParameter=1}"
-                                 Foreground="Ivory"
-                                 Checked="Rb_Class_Checked"/>
+                                 Tag="1"
+                                 Foreground="Ivory" IsChecked="{Binding Report.Class, ConverterParameter=1, Converter={StaticResource ResultClassRadioBtnConverter}}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction
+                                    Command="{Binding ClassChanged}"
+                                    CommandParameter="{Binding ElementName=Rb_Class1, Path=.}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
                     <RadioButton Content="乙級"
                                  Name="Rb_Class2"
                                  GroupName="ClassSelector"
                                  Grid.Column="1"
-                                 IsChecked="{Binding Class, Mode=TwoWay, Converter={StaticResource ResultClassRadioBtnConverter}, ConverterParameter=2}"
-                                 Foreground="Ivory"
-                                 Checked="Rb_Class_Checked"/>
+                                 Tag="2"
+                                 Foreground="Ivory" IsChecked="{Binding Report.Class, ConverterParameter=2, Converter={StaticResource ResultClassRadioBtnConverter}}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction
+                                    Command="{Binding ClassChanged}"
+                                    CommandParameter="{Binding ElementName=Rb_Class2, Path=.}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
                     <RadioButton Content="丙級"
                                  Name="Rb_Class3"
                                  GroupName="ClassSelector"
                                  Grid.Column="2"
-                                 IsChecked="{Binding Class, Mode=TwoWay, Converter={StaticResource ResultClassRadioBtnConverter}, ConverterParameter=3}"
-                                 Foreground="Ivory"
-                                 Checked="Rb_Class_Checked"/>
+                                 Tag="3"
+                                 Foreground="Ivory" IsChecked="{Binding Report.Class, ConverterParameter=3, Converter={StaticResource ResultClassRadioBtnConverter}}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction
+                                    Command="{Binding ClassChanged}"
+                                    CommandParameter="{Binding ElementName=Rb_Class3, Path=.}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
                 </Grid>
             </Border>
             <TreeView Name="trvMenu"
                       DockPanel.Dock="Bottom"
-                      SelectedItemChanged="TreeView_SelectedItemChanged"
-                      Style="{StaticResource DarkTheme}">
+                      Style="{StaticResource DarkTheme}" ItemsSource="{Binding TreeViewItems}">
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="TreeViewItem">
                         <Setter Property="IsExpanded" Value="True"/>
@@ -155,6 +180,14 @@
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                     </Style>
                 </TreeView.ItemContainerStyle>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedItemChanged">
+                        <i:InvokeCommandAction 
+                            Command="{Binding SelectedItemChanged}"
+                            CommandParameter="{Binding ElementName=trvMenu
+                                             ,Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate 
                             DataType="{x:Type viewmodel:TreeViewItemsViewModel}" 
@@ -198,13 +231,11 @@
                          Grid.Row="0"
                          Grid.ColumnSpan="4"
                          VerticalScrollBarVisibility="Auto"
-                         Style="{StaticResource DarkTheme}"
-                         Text="{Binding Content.PassCondition, Mode=OneWay}"/>
+                         Style="{StaticResource DarkTheme}" Text="{Binding CurrentSelectedRule.Content.PassCondition, Mode=OneWay}"/>
                 <TextBlock Grid.Row="1"
                            Grid.Column="0"
-                           Text="{Binding FinalResult, Converter={StaticResource ResultStringConverter}}"
                            VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center" Text="{Binding CurrentSelectedRule.FinalResult, Converter={StaticResource ResultStringConverter}}"/>
                 <Button Grid.Row="1"
                         Grid.Column="1"
                         Content="符合"
@@ -212,7 +243,8 @@
                         BorderBrush="LightGreen"
                         Foreground="LightGreen"
                         Name="Btn_Accept"
-                        Click="Btn_Accept_Click"/>
+                        Tag="1"
+                        Command="{Binding RuleAccepted}"/>
                 <Button Grid.Row="1"
                         Grid.Column="2"
                         Content="不符合"
@@ -220,7 +252,8 @@
                         BorderBrush="#FFFF8888"
                         Foreground="#FFFF8888"
                         Name="Btn_Fail"
-                        Click="Btn_Fail_Click"/>
+                        Tag="2"
+                        Command="{Binding RuleFailed}"/>
                 <Button Grid.Row="1"
                         Grid.Column="3"
                         Content="不適用"
@@ -228,7 +261,8 @@
                         BorderBrush="LightGray"
                         Foreground="LightGray"
                         Name="Btn_NotFit"
-                        Click="Btn_NotFit_Click"/>
+                        Tag="3"
+                        Command="{Binding RuleNotfit}"/>
 
             </Grid>
         </GroupBox>
@@ -252,7 +286,7 @@
 
                 <ItemsControl Name="SubRules"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         Style="{StaticResource DarkTheme}">
+                         Style="{StaticResource DarkTheme}" ItemsSource="{Binding CurrentSelectedRule.SubRuleList}">
                     <ItemsControl.Resources>
                         <DataTemplate DataType="{x:Type local:SubRuleResult}">
                             <GroupBox Width="Auto" 
@@ -294,9 +328,15 @@
                                                  IsChecked="{Binding Result, Converter={StaticResource ResultStringBoolConverter}, ConverterParameter=accept}"
                                                  Style="{StaticResource DarkTheme}"
                                                  Background="White"
-                                                 Tag="{Binding Content.SubRuleNumber}"
-                                                 Name="Rb_SubRule_Accept"
-                                                 Click="Rb_SubRule_Accept_Click">
+                                                 Tag="{Binding .}"
+                                                 Name="Rb_SubRule_Accept">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.SubRuleResultChanged}"
+                                                    CommandParameter="{Binding ElementName=Rb_SubRule_Accept, Path=.}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
                                     </RadioButton>
                                     <RadioButton Grid.Column="1"
                                                  Grid.Row="1"
@@ -305,18 +345,25 @@
                                                  IsChecked="{Binding Result, Converter={StaticResource ResultStringBoolConverter}, ConverterParameter=fail}"
                                                  Style="{StaticResource DarkTheme}"
                                                  Background="White"
-                                                 Tag="{Binding Content.SubRuleNumber}"
-                                                 Name="Rb_SubRule_Fail"
-                                                 Click="Rb_SubRule_Fail_Click">
+                                                 Tag="{Binding .}"
+                                                 Name="Rb_SubRule_Fail">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.SubRuleResultChanged}"
+                                                    CommandParameter="{Binding ElementName=Rb_SubRule_Fail, Path=.}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
                                     </RadioButton>
                                     <Button Grid.Column="2"
                                             Grid.Row="1"
                                             Grid.ColumnSpan="2"
                                             Margin="2"
                                             Style="{StaticResource ButtonHover}"
-                                            Tag="{Binding Content.SubRuleNumber}"
+                                            Tag="{Binding .}"
                                             Name="Btn_Pictures"
-                                            Click="Btn_Pictures_Click">
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.PictureButtonClicked}"
+                                            CommandParameter="{Binding ElementName=Btn_Pictures, Path=Tag}">
                                         <WrapPanel>
                                             <TextBlock>圖片</TextBlock>
                                             <TextBlock>(</TextBlock>
@@ -340,10 +387,10 @@
             <StackPanel>
                 <Border BorderBrush="White"
                         BorderThickness="1">
-                    <ItemsControl Name="SubRuleResults">
+                    <ItemsControl Name="SubRuleResults" ItemsSource="{Binding CurrentSelectedRule.SubRuleList}">
                         <ItemsControl.Resources>
                             <DataTemplate DataType="{x:Type local:SubRuleResult}">
-                                <TextBox Text="{Binding Text}"
+                                <TextBox Text="{Binding Text, Mode=TwoWay}"
                                          TextWrapping="Wrap"
                                          AcceptsReturn="True"
                                          Height="Auto"
@@ -367,8 +414,7 @@
               Visibility="{Binding IsPicturePanelShown, Converter={StaticResource VisibilityBoolConverter}}"
               Background="#AA000000"
               AllowDrop="True"
-              DragEnter="PicturesPanel_DragEnter"
-              DragDrop.Drop="PicturesPanel_Drop">
+              Tag="{Binding CurrentSelectedSubRule}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="4*" />
@@ -400,23 +446,33 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-                <ContextMenu x:Key="PicContextMenu">
+                <!--<ContextMenu x:Key="PicContextMenu">
                     <MenuItem Header="上移一張"
                               Name="CM_PicMoveUp"
-                              Tag="{Binding Index, Mode=OneWay}"
-                              Click="CM_PicMoveUp_Click"/>
+                              Tag="{Binding ., Mode=OneWay}"
+                              Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.PictureMoveUp}"
+                              CommandParameter="{Binding ElementName=CM_PicMoveUp, Path=Tag}"/>
                     <MenuItem Header="下移一張"
                               Name="CM_PicMoveDown"
-                              Tag="{Binding Index, Mode=OneWay}"
-                              Click="CM_PicMoveDown_Click"/>
+                              Tag="{Binding ., Mode=OneWay}"/>
                     <Separator/>
                     <MenuItem Header="刪除圖片"
                               Name="CM_DeletePic"
-                              Tag="{Binding Index, Mode=OneWay}"
-                              Click="CM_DeletePic_Click"/>
-                </ContextMenu>
+                              Tag="{Binding ., Mode=OneWay}"/>
+                </ContextMenu>-->
             </Grid.Resources>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="DragEnter">
+                    <ei:CallMethodAction MethodName="PicturePanelDragEnter" 
+                                         TargetObject="{Binding}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Drop">
+                    <ei:CallMethodAction MethodName="PicturePanelDrop" 
+                                         TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             
+
             <Label Grid.Column="3"
                    Content="+"
                    FontWeight="Bold"
@@ -424,8 +480,7 @@
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    ToolTip="新增圖片"
-                   Name="AddPicture"
-                   MouseLeftButtonUp="AddPicture_MouseLeftButtonUp"/>
+                   Name="AddPicture"/>
 
             <Label Grid.Column="4"
                    Content="×"
@@ -434,8 +489,14 @@
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    ToolTip="關閉頁面"
-                   Name="PictureClose"
-                   MouseLeftButtonUp="PictureClose_MouseLeftButtonUp"/>
+                   Name="PictureClose">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseUp">
+                        <i:InvokeCommandAction 
+                            Command="{Binding ClosePicturePanel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
 
             <ScrollViewer Grid.Column="1"
                           Grid.Row="1"
@@ -444,21 +505,52 @@
                 <ItemsControl Grid.Column="1"
                               Grid.Row="1"
                               AllowDrop="True"
-                              Name="PicturesPanel">
+                              Name="PicturesPanel" ItemsSource="{Binding CurrentSelectedSubRule.Pictures}"
+                              Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
                     <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type local:Picture}">
-                            <StackPanel Orientation="Vertical">
-                                <Image Source="{Binding FullPath, Mode=OneWay}"
-                                       Margin="5"
-                                       Tag="{Binding Index, Mode=OneWay}"
-                                       ContextMenu="{StaticResource PicContextMenu}"
-                                       Name="Thumbnail"
-                                       MouseLeftButtonUp="Thumbnail_MouseLeftButtonUp"/>
-
-
-                            </StackPanel>
-                        </DataTemplate>
+                        <ContextMenu x:Key="context">
+                            <MenuItem Header="上移一張"
+                                      Name="CM_PicMoveUp" Command="{Binding PictureMoveUp, Mode=OneWay}"/>
+                            <MenuItem Header="下移一張"
+                                      Name="CM_PicMoveDown"/>
+                            <Separator/>
+                            <MenuItem Header="刪除圖片"
+                                      Name="CM_DeletePic"/>
+                        </ContextMenu>
                     </ItemsControl.Resources>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Margin="5"
+                                   Name="Thumbnail"
+                                   Source="{Binding FullPath, Mode=OneWay}"
+                                   Tag="{Binding .}">
+                                <Image.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="上移一張"
+                                                  Name="CM_PicMoveUp" Tag="{Binding Index}"
+                                                  Command="{Binding Path=Data.PictureMoveUp, Source={StaticResource proxy}}"
+                                                  CommandParameter="{Binding .}"/>
+                                        <MenuItem Header="下移一張"
+                                                  Name="CM_PicMoveDown"
+                                                  Command="{Binding Path=Data.PictureMoveDown, Source={StaticResource proxy}}"
+                                                  CommandParameter="{Binding .}"/>
+                                        <Separator/>
+                                        <MenuItem Header="刪除圖片"
+                                                  Name="CM_DeletePic"
+                                                  Command="{Binding Path=Data.PictureDeleted, Source={StaticResource proxy}}"
+                                                  CommandParameter="{Binding .}"/>
+                                    </ContextMenu>
+                                </Image.ContextMenu>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDown">
+                                        <i:InvokeCommandAction 
+                                            Command="{Binding Path=Data.ThumbnailClicked, Source={StaticResource proxy}}"
+                                            CommandParameter="{Binding ElementName=Thumbnail, Path=Tag}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Image>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
             <Grid Grid.Row="0"

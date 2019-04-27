@@ -8,10 +8,10 @@ namespace MASReportTool
         private readonly Action<object> _execute;
         private readonly Func<bool> _canExecute;
 
-        public RelayCommand(Action<object> saveFileExecute, Func<bool> canSaveFileExecute)
+        public RelayCommand(Action<object> execute, Func<bool> canExecute)
         {
-            _execute = saveFileExecute;
-            _canExecute = canSaveFileExecute;
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
         public event EventHandler CanExecuteChanged

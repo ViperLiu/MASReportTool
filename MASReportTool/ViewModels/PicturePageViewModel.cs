@@ -11,20 +11,27 @@ namespace MASReportTool.ViewModels
     {
         public SubRuleResult SubRule { get; }
 
-        public Picture CurrentSelectedPic { get; }
+        public Picture CurrentSelectedPic { get; set; }
 
-        public List<PictureViewModel> Pictures { get; }
+        public ICommand ThumbnailClicked
+        {
+            get { return new RelayCommand(ThumbnailClickedExecute, CanThumbnailClickedExecute); }
+        }
 
         public PicturePageViewModel(SubRuleResult subRule)
         {
             SubRule = subRule;
-            Pictures = new List<PictureViewModel>();
-            foreach(var pic in subRule.Pictures)
-            {
-                Pictures.Add(new PictureViewModel(pic));
-            }
         }
 
-        
+        private bool CanThumbnailClickedExecute()
+        {
+            return true;
+        }
+
+        private void ThumbnailClickedExecute(object parameter)
+        {
+            Console.WriteLine("fuck you");
+        }
+
     }
 }
