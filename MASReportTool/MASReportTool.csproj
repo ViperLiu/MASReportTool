@@ -145,6 +145,9 @@
     <Resource Include="assets\pics\icon_notfit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="assets\pics\icon_open_file.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="assets\基準30.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
