@@ -110,6 +110,13 @@
                     BorderBrush="White" 
                     Grid.Column="0"
                     Grid.Row="2"
+                    ToolTip="開啟舊檔">
+                <Image Source="/assets/pics/icon_open_file.png"/>
+            </Button>
+            <Button BorderThickness="2"
+                    BorderBrush="White" 
+                    Grid.Column="0"
+                    Grid.Row="3"
                     ToolTip="輸出報告">
                 <Image Source="/assets/pics/icon_output.png"/>
             </Button>
