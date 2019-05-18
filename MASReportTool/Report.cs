@@ -318,6 +318,15 @@ namespace MASReportTool
             this.PropertyChanged += this.Report_PropertyChanged; ;
         }
 
+        public void Reset()
+        {
+            this.CurrentOpenedFile = "*未儲存的報告.jsonr";
+            foreach (var rule in this.RuleList)
+            {
+                rule.Value.Reset();
+            }
+        }
+
         private void Report_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsSaved")

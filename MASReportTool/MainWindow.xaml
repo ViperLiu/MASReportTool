@@ -103,7 +103,8 @@
                     BorderBrush="White" 
                     Grid.Column="0"
                     Grid.Row="1"
-                    ToolTip="開新檔案">
+                    ToolTip="開新檔案"
+                    Command="{Binding NewReport}">
                 <Image Source="/assets/pics/icon_new_file.png"/>
             </Button>
             <Button BorderThickness="2"

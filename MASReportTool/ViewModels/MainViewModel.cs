@@ -337,6 +337,31 @@ namespace MASReportTool.ViewModels
             }
         }
 
+        public ICommand NewReport
+        {
+            get
+            {
+                return new RelayCommand(
+                    (object obj) => {
+                        if (Report.IsSaved)
+                        {
+                            Report.Reset();
+                            return;
+                        }
+                        var result = MessageBox.Show(
+                            "開始新的報告前，是否先存檔？", "尚未存檔", MessageBoxButton.YesNoCancel);
+                        if (result == MessageBoxResult.Yes)
+                            SaveJsonFile.Execute(new object());
+                        else if (result == MessageBoxResult.No)
+                            Report.Reset();
+                        else if (result == MessageBoxResult.Cancel)
+                            return;
+                    },
+                    () => { return true; }
+                    );
+            }
+        }
+
         public MainViewModel()
         {
             var ruleContent = LoadRuleContents();
