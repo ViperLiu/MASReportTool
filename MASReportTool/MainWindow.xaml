@@ -47,7 +47,7 @@
     <Grid Background="#FF333333">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" 
-                              MaxWidth="70"/>
+                              MaxWidth="50"/>
             <ColumnDefinition Width="3*"
                               MaxWidth="200"/>
             <ColumnDefinition Width="6*"
@@ -67,12 +67,13 @@
               Grid.RowSpan="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" 
-                               MaxHeight="70"/>
+                               MaxHeight="50"/>
                 <RowDefinition Height="*" 
-                               MaxHeight="70"/>
+                               MaxHeight="50"/>
                 <RowDefinition Height="*" 
-                               MaxHeight="70"/>
-                <RowDefinition Height="*" />
+                               MaxHeight="50"/>
+                <RowDefinition Height="*"
+                               MaxHeight="50"/>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
