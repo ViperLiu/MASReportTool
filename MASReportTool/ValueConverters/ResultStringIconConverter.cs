@@ -21,7 +21,7 @@ namespace MASReportTool.ValueConverters
                 case "notfit":
                     return "/assets/pics/icon_notfit.png";
             }
-            return Binding.DoNothing;
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
