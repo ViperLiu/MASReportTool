@@ -1,4 +1,4 @@
-﻿using MASReportTool.ViewModels;
+using MASReportTool.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -319,6 +319,24 @@ namespace MASReportTool
 
             this.CurrentOpenedFile = "*未儲存的報告.jsonr";
             this.PropertyChanged += this.Report_PropertyChanged; ;
+        }
+
+        public void LoadRuleContents()
+        {
+            var contents = MainViewModel.RuleContent;
+            //this.RuleList = new Dictionary<string, RuleResults>();
+
+            foreach (var rule in contents)
+            {
+                Console.WriteLine("LoadRuleContents");
+                this.RuleList[rule.Key].Content = rule.Value;
+                ushort subRuleNumber = 0;
+                foreach (var sub in rule.Value.SubRuleContentsList)
+                {
+                    this.RuleList[rule.Key].SubRuleList[subRuleNumber].Content = sub;
+                    subRuleNumber++;
+                }
+            }
         }
 
         public void Reset()
