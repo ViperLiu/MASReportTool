@@ -28,6 +28,8 @@ namespace MASReportTool
             {
                 var jsonStr = reader.ReadToEnd();
                 var report = JsonConvert.DeserializeObject<Report>(jsonStr);
+                report.LoadRuleContents();
+                report.CurrentOpenedFile = FilePath;
                 return report;
             }
         }
