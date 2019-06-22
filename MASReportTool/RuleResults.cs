@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -30,7 +30,7 @@ namespace MASReportTool
         }
 
         [JsonIgnore]
-        public RuleContents Content { get; private set; }
+        public RuleContents Content { get; set; }
 
         public RuleResults(RuleContents content)
         {
