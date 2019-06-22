@@ -29,6 +29,7 @@ namespace MASReportTool.ViewModels
                 var ruleClass = ruleResult.Content.Class;
                 if(!Report.ClassFilter(report.Class, ruleClass))
                 {
+                    ruleResult.DontTest();
                     continue;
                 }
                 TreeViewItemsViewModel parentItem = new TreeViewItemsViewModel

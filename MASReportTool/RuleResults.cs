@@ -63,6 +63,10 @@ namespace MASReportTool
 
         public void DontTest()
         {
+            foreach(var sub in SubRuleList)
+            {
+                sub.Reset();
+            }
             this.FinalResult = "donttest";
             this.SubRuleList[0].Text = "此項不須檢測";
         }
