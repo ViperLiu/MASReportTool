@@ -39,7 +39,6 @@ namespace MASReportTool
         }
 
         private int _Index;
-        [JsonIgnore]
         public int Index
         {
             get { return _Index; }
@@ -54,11 +53,12 @@ namespace MASReportTool
         }
         [JsonIgnore]
         public Image Image { get; private set; }
-        [JsonIgnore]
+
         public double Ratio { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [JsonIgnore]
         public ICommand Clicked
         {
             get { return new RelayCommand(ClickedExecute, CanClickedExecute); }
