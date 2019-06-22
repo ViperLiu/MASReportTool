@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MASReportTool.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -294,8 +295,10 @@ namespace MASReportTool
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public Report(Dictionary<string, RuleContents> contents)
+        [JsonConstructor]
+        public Report()
         {
+            var contents = MainViewModel.RuleContent;
             this.RuleList = new Dictionary<string, RuleResults>();
 
             foreach(var rule in contents)

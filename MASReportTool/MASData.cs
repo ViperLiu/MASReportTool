@@ -7,7 +7,7 @@ namespace MASReportTool
     public class MASData
     {
         public static Dictionary<string, RuleContents> RuleContents { get; } = LoadRuleContents();
-        public static Report Report = new Report(RuleContents);
+        public static Report Report = new Report();
         public static List<string> RuleNumberList = new List<string>();
         public static string CurrentSelectRuleNumber;
         public static RuleContents CurrentSelectedRuleContent;
