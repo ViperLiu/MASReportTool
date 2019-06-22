@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,21 @@ namespace MASReportTool.ViewModels
         //private Dictionary<string, RuleContents> RuleContents { get; set; }
         public static Dictionary<string, RuleContents> RuleContent;
 
-        public Report Report { get; private set; }
+        private Report _Report;
+        public Report Report
+        {
+            get { return _Report; }
+            private set
+            {
+                if(value != _Report)
+                {
+                    _Report = value;
+                    OnPropertyChanged("Report");
+                    TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(_Report);
+                    CurrentSelectedRule = TreeViewItems[0].Items[0].RuleResult;
+                }
+            }
+        }
 
         private List<TreeViewItemsViewModel> _TreeViewItems;
         public List<TreeViewItemsViewModel> TreeViewItems
@@ -399,9 +413,6 @@ namespace MASReportTool.ViewModels
         {
             RuleContent = LoadRuleContents();
             Report = new Report();
-            //CurrentSelectedRule = Report.RuleList["4.1.1.1.2"];
-            TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(Report);
-            CurrentSelectedRule = TreeViewItems[0].Items[0].RuleResult;
             Console.WriteLine(CurrentSelectedRule.Content.Title);
         }
 
