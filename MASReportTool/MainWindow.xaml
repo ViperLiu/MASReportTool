@@ -112,7 +112,8 @@
                     BorderBrush="White" 
                     Grid.Column="0"
                     Grid.Row="2"
-                    ToolTip="開啟舊檔">
+                    ToolTip="開啟舊檔"
+                    Command="{Binding LoadJsonFile}">
                 <Image Source="/assets/pics/icon_open_file.png"/>
             </Button>
             <Button BorderThickness="2"
