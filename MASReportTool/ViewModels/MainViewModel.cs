@@ -385,6 +385,7 @@ namespace MASReportTool.ViewModels
                     (object obj) => {
                         
                         OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "jsonr檔|*.jsonr";
                         var result = openFileDialog.ShowDialog();
                         string file = openFileDialog.FileName;
                         string extension = Path.GetExtension(file).ToLower();
