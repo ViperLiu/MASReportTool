@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -363,10 +363,42 @@ namespace MASReportTool.ViewModels
             }
         }
 
+        public ICommand LoadJsonFile
+        {
+            get
+            {
+                return new RelayCommand(
+                    (object obj) => {
+                        
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        var result = openFileDialog.ShowDialog();
+                        string file = openFileDialog.FileName;
+                        string extension = Path.GetExtension(file).ToLower();
+                        if (result == true)
+                        {
+                            if (extension == ".jsonr")
+                            {
+                                JsonFileController json = new JsonFileController(file);
+                                var report = json.LoadFile();
+                                Console.WriteLine(report.RuleList["4.1.2.3.4"].FinalResult);
+                                Console.WriteLine(report.RuleList["4.1.2.3.6"].FinalResult);
+                                Console.WriteLine(report.RuleList["4.1.2.3.7"].FinalResult);
+                            }
+                            else
+                            {
+                                MessageBox.Show("不支援此檔案格式");
+                            }
+                        }
+                    },
+                    () => { return true; }
+                    );
+            }
+        }
+
         public MainViewModel()
         {
-            var ruleContent = LoadRuleContents();
-            Report = new Report(ruleContent);
+            RuleContent = LoadRuleContents();
+            Report = new Report();
             //CurrentSelectedRule = Report.RuleList["4.1.1.1.2"];
             TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(Report);
             CurrentSelectedRule = TreeViewItems[0].Items[0].RuleResult;
@@ -448,5 +480,6 @@ namespace MASReportTool.ViewModels
                 SaveFile(file);
             }
         }
+
     }
 }
