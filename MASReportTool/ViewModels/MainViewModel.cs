@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -393,10 +393,7 @@ namespace MASReportTool.ViewModels
                             if (extension == ".jsonr")
                             {
                                 JsonFileController json = new JsonFileController(file);
-                                var report = json.LoadFile();
-                                Console.WriteLine(report.RuleList["4.1.2.3.4"].FinalResult);
-                                Console.WriteLine(report.RuleList["4.1.2.3.6"].FinalResult);
-                                Console.WriteLine(report.RuleList["4.1.2.3.7"].FinalResult);
+                                this.Report = json.LoadFile();
                             }
                             else
                             {
