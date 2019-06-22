@@ -12,7 +12,7 @@ namespace MASReportTool
         public string Result
         {
             get { return _Result; }
-            private set
+            set
             {
                 if (_Result != value)
                 {
@@ -37,7 +37,7 @@ namespace MASReportTool
         }
 
         [JsonIgnore]
-        public SubRuleContents Content { get; private set; }
+        public SubRuleContents Content { get; set; }
 
         public ObservableCollection<Picture> Pictures {
             get;
