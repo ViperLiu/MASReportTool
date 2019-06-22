@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,7 @@ namespace MASReportTool.ViewModels
     class MainViewModel : INotifyPropertyChanged
     {
         //private Dictionary<string, RuleContents> RuleContents { get; set; }
+        public static Dictionary<string, RuleContents> RuleContent;
 
         public Report Report { get; private set; }
 
