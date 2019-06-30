@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BindingProxy.cs" />
+    <Compile Include="MASReport.cs" />
     <Compile Include="ViewModels\FunctionBarViewModel.cs" />
     <Compile Include="ValueConverters\IsSavedColorConverter.cs" />
     <Compile Include="JsonFileController.cs" />
