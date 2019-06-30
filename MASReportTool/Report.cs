@@ -239,24 +239,6 @@ namespace MASReportTool
             }
         }
 
-        private string DocxLocation;
-        private DocX TemplateDocx;
-
-        //private string _TitleString;
-        //[JsonIgnore]
-        //public string TitleString
-        //{
-        //    get { return _TitleString; }
-        //    set
-        //    {
-        //        if(_TitleString != value)
-        //        {
-        //            _TitleString = value;
-        //            OnPropertyChanged("TitleString");
-        //        }
-        //    }
-        //}
-
         private string _CurrentOpenedFile;
         [JsonIgnore]
         public string CurrentOpenedFile
@@ -328,7 +310,6 @@ namespace MASReportTool
 
             foreach (var rule in contents)
             {
-                Console.WriteLine("LoadRuleContents");
                 this.RuleList[rule.Key].Content = rule.Value;
                 ushort subRuleNumber = 0;
                 foreach (var sub in rule.Value.SubRuleContentsList)
@@ -368,7 +349,6 @@ namespace MASReportTool
         public void MarkAsNotSaved(string name = "")
         {
             this.IsSaved = false;
-            Console.WriteLine("Mark As Not Saved : " + name);
         }
 
         public void MarkAsSaved()
