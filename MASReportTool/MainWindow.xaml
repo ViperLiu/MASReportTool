@@ -120,7 +120,8 @@
                     BorderBrush="White" 
                     Grid.Column="0"
                     Grid.Row="3"
-                    ToolTip="輸出報告">
+                    ToolTip="輸出報告"
+                    Command="{Binding BuildReport}">
                 <Image Source="/assets/pics/icon_output.png"/>
             </Button>
         </Grid>

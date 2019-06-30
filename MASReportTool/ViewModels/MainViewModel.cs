@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -407,11 +408,41 @@ namespace MASReportTool.ViewModels
             }
         }
 
+        public ICommand BuildReport
+        {
+            get
+            {
+                return new RelayCommand(
+                    (object obj) => {
+                        SaveFileDialog outputReportDialog = new SaveFileDialog();
+                        outputReportDialog.Filter = "Word文件|*.docx";
+                        outputReportDialog.DefaultExt = ".docx";
+                        outputReportDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                        var result = outputReportDialog.ShowDialog();
+                        var file = outputReportDialog.FileName;
+                        MASReport reportFile = new MASReport(Report);
+                        try
+                        {
+                            reportFile.BuildReport(file);
+                        }
+                        catch (Exception exception)
+                        {
+                            Console.WriteLine(exception.Message + "\r\n");
+                            Console.WriteLine(exception.StackTrace + "\r\n");
+                            return;
+                        }
+                        Process.Start(file);
+                    },
+                    () => { return true; }
+                    );
+            }
+        }
+
+
         public MainViewModel()
         {
             RuleContent = LoadRuleContents();
             Report = new Report();
-            Console.WriteLine(CurrentSelectedRule.Content.Title);
         }
 
         protected void OnPropertyChanged(string name)
