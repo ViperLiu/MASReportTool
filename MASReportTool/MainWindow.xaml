@@ -580,7 +580,7 @@
                 <TextBox Grid.Row="1"
                          Margin="5"
                          Style="{StaticResource DarkTheme}"
-                         Text="{Binding CurrentSelectedPic.Caption, Mode=TwoWay}"/>
+                         Text="{Binding CurrentSelectedPic.Caption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             </Grid>
         </Grid>
