@@ -84,8 +84,8 @@ namespace MASReportTool
             for (var i = 1; i < _overviewTable.RowCount; i++)
             {
                 var paragraph = _overviewTable.Rows[i].Cells[2].Paragraphs[0];
-                var resultStr = _ruleList[i - 1].FinalResult;
-                var color = ColorTable.GetColor(resultStr);
+                var resultStr = ValueConverter.GetDisplayStringFromResult(_ruleList[i - 1].FinalResult);
+                var color = ValueConverter.GetColorFromResult(_ruleList[i - 1].FinalResult);
                 paragraph.Append(resultStr).Font("標楷體").Color(color);
             }
         }
@@ -145,7 +145,7 @@ namespace MASReportTool
 
             foreach (var subRule in currentRule.SubRuleList)
             {
-                var color = ColorTable.GetColor(subRule.Text);
+                var color = ValueConverter.GetColorFromResult(subRule.Text);
                 //輸出Text
                 resultTextPara.Append(subRule.Text + "\r\n").Font("標楷體").Color(color);
                 resultTextPara.Alignment = Alignment.left;
@@ -281,48 +281,41 @@ namespace MASReportTool
                 //取得目前要編輯的cell
                 Paragraph currentPara = resultTable.Rows[j + 1].Cells[0].Paragraphs[0];
 
-                string result = currentRule.SubRuleList[j].Result;
-                if (result == "accept")
-                {
-                    currentPara.Append("符合").Color(Color.Black).Font("標楷體");
-                }
-                else if (result == "fail")
-                {
-                    currentPara.Append("不符合").Color(Color.Red).Font("標楷體");
-                }
-                else if (result == "notfit")
-                {
-                    currentPara.Append("不適用").Color(Color.Blue).Font("標楷體");
-                }
-                else
-                {
-                    currentPara.Append("未檢測").Color(Color.Black).Font("標楷體");
-                }
+                var result = ValueConverter.GetDisplayStringFromResult(currentRule.SubRuleList[j].Result);
+                var color = ValueConverter.GetColorFromResult(currentRule.SubRuleList[j].Result);
+                currentPara.Append(result).Color(color).Font("標楷體");
             }
         }
 
-        private static class ColorTable
+        private static class ValueConverter
         {
-            private static Color Accept { get => Color.Black; }
-
-            private static Color Fail { get => Color.Red; }
-
-            private static Color Notfit { get => Color.Blue; }
-
-            private static Color Default { get => Color.Black; }
-
-            public static Color GetColor(string str)
+            public static Color GetColorFromResult(string str)
             {
                 switch(str)
                 {
                     case "accept":
-                        return Accept;
+                        return Color.Black;
                     case "fail":
-                        return Fail;
+                        return Color.Red;
                     case "notfit":
-                        return Notfit;
+                        return Color.Blue;
                     default:
-                        return Default;
+                        return Color.Black;
+                }
+            }
+
+            public static string GetDisplayStringFromResult(string str)
+            {
+                switch (str)
+                {
+                    case "accept":
+                        return "符合";
+                    case "fail":
+                        return "不符合";
+                    case "notfit":
+                        return "不適用";
+                    default:
+                        return "未檢測";
                 }
             }
         }
