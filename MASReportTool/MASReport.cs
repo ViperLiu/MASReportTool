@@ -11,18 +11,21 @@ namespace MASReportTool
 {
     class MASReport
     {
+        
+
         private readonly string _templateA = "***REMOVED***";
         private readonly string _templateB = "***REMOVED***";
         private readonly string _templateC = "***REMOVED***";
         private readonly string _templateFile = "assets\\";
         private readonly Report _report;
+        private readonly List<Table> _resultTables;
+        private readonly Table _overviewTable;
+        private readonly List<RuleResults> _ruleList;
 
         private readonly DocX _templateDocx;
 
         public MASReport(Report report)
         {
-            _report = report;
-
             if (report.Class == 1)
                 _templateFile += _templateA;
             else if (report.Class == 2)
@@ -41,6 +44,11 @@ namespace MASReportTool
                 Console.WriteLine(e.Message);
                 throw new Exception("[ERROR] 無法開啟 " + _templateFile + "，檔案可能已被其他程式開啟\r\n");
             }
+
+            _report = report;
+            _ruleList = GetAvailableRuleList();
+            _resultTables = GetResultTables();
+            _overviewTable = GetOverviewTable();
         }
 
         public void SaveFile(string outputLocation)
@@ -66,21 +74,31 @@ namespace MASReportTool
 
         public void BuildReport(string buildLocation)
         {
+            FillOverviewTable();
             FillResultTables();
             SaveFile(buildLocation);
         }
 
+        private void FillOverviewTable()
+        {
+            for (var i = 1; i < _overviewTable.RowCount; i++)
+            {
+                var paragraph = _overviewTable.Rows[i].Cells[2].Paragraphs[0];
+                var resultStr = _ruleList[i - 1].FinalResult;
+                var color = ColorTable.GetColor(resultStr);
+                paragraph.Append(resultStr).Font("標楷體").Color(color);
+            }
+        }
+
         private void FillResultTables()
         {
-            var resultTables = GetResultTables();
-            var ruleResults = GetAvailableRuleList();
-            for (var i = 0; i < resultTables.Count; i++)
+            for (var i = 0; i < _resultTables.Count; i++)
             {
                 //寫入佐證資料
-                WriteTestData(resultTables[i], ruleResults[i]);
+                WriteTestData(_resultTables[i], _ruleList[i]);
 
                 //寫入各基準的檢測結果
-                WriteTestResult(resultTables[i], ruleResults[i]);
+                WriteTestResult(_resultTables[i], _ruleList[i]);
             }
         }
 
@@ -110,7 +128,7 @@ namespace MASReportTool
             return targetTables;
         }
 
-        private Table GetResultOverviewTable()
+        private Table GetOverviewTable()
         {
             return _templateDocx.Tables[1];
         }
@@ -127,8 +145,9 @@ namespace MASReportTool
 
             foreach (var subRule in currentRule.SubRuleList)
             {
+                var color = ColorTable.GetColor(subRule.Text);
                 //輸出Text
-                resultTextPara.Append(subRule.Text + "\r\n").Font("標楷體");
+                resultTextPara.Append(subRule.Text + "\r\n").Font("標楷體").Color(color);
                 resultTextPara.Alignment = Alignment.left;
 
                 //輸出圖片
@@ -278,6 +297,32 @@ namespace MASReportTool
                 else
                 {
                     currentPara.Append("未檢測").Color(Color.Black).Font("標楷體");
+                }
+            }
+        }
+
+        private static class ColorTable
+        {
+            private static Color Accept { get => Color.Black; }
+
+            private static Color Fail { get => Color.Red; }
+
+            private static Color Notfit { get => Color.Blue; }
+
+            private static Color Default { get => Color.Black; }
+
+            public static Color GetColor(string str)
+            {
+                switch(str)
+                {
+                    case "accept":
+                        return Accept;
+                    case "fail":
+                        return Fail;
+                    case "notfit":
+                        return Notfit;
+                    default:
+                        return Default;
                 }
             }
         }
