@@ -102,7 +102,7 @@
     <Compile Include="ValueConverters\ResultStringBoolConverter.cs" />
     <Compile Include="ValueConverters\ResultStringConverter.cs" />
     <Compile Include="ValueConverters\ResultStringIconConverter.cs" />
-    <Compile Include="Rule.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="RuleContents.cs" />
     <Compile Include="RuleResults.cs" />
     <Compile Include="SubRuleContents.cs" />
