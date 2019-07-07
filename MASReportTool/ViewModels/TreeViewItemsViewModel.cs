@@ -27,7 +27,7 @@ namespace MASReportTool.ViewModels
                 var ruleNumber = rule.Key;
                 var parent = ruleNumber.Remove(ruleNumber.Length - 2);
                 var ruleClass = ruleResult.Content.Class;
-                if(ruleResult.FinalResult == "donttest")
+                if(ruleResult.FinalResult == Result.DontTest)
                     ruleResult.Reset();
                 if (!Report.ClassFilter(report.Class, ruleClass))
                 {
