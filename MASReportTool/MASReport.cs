@@ -84,8 +84,8 @@ namespace MASReportTool
             for (var i = 1; i < _overviewTable.RowCount; i++)
             {
                 var paragraph = _overviewTable.Rows[i].Cells[2].Paragraphs[0];
-                var resultStr = ValueConverter.GetDisplayStringFromResult(_ruleList[i - 1].FinalResult);
-                var color = ValueConverter.GetColorFromResult(_ruleList[i - 1].FinalResult);
+                var resultStr = _ruleList[i - 1].FinalResult.GetDisplayString();
+                var color = _ruleList[i - 1].FinalResult.GetDisplayColor();
                 paragraph.Append(resultStr).Font("標楷體").Color(color);
             }
         }
@@ -108,7 +108,7 @@ namespace MASReportTool
             foreach (var rule in _report.RuleList)
             {
                 var r = rule.Value;
-                if (r.FinalResult == "donttest")
+                if (r.FinalResult == Result.DontTest)
                     continue;
                 tmp.Add(r);
             }
@@ -145,9 +145,8 @@ namespace MASReportTool
 
             foreach (var subRule in currentRule.SubRuleList)
             {
-                var color = ValueConverter.GetColorFromResult(subRule.Text);
                 //輸出Text
-                resultTextPara.Append(subRule.Text + "\r\n").Font("標楷體").Color(color);
+                resultTextPara.Append(subRule.Text + "\r\n").Font("標楷體");
                 resultTextPara.Alignment = Alignment.left;
 
                 //輸出圖片
@@ -281,42 +280,9 @@ namespace MASReportTool
                 //取得目前要編輯的cell
                 Paragraph currentPara = resultTable.Rows[j + 1].Cells[0].Paragraphs[0];
 
-                var result = ValueConverter.GetDisplayStringFromResult(currentRule.SubRuleList[j].Result);
-                var color = ValueConverter.GetColorFromResult(currentRule.SubRuleList[j].Result);
+                var result = currentRule.SubRuleList[j].Result.GetDisplayString();
+                var color = currentRule.SubRuleList[j].Result.GetDisplayColor();
                 currentPara.Append(result).Color(color).Font("標楷體");
-            }
-        }
-
-        private static class ValueConverter
-        {
-            public static Color GetColorFromResult(string str)
-            {
-                switch(str)
-                {
-                    case "accept":
-                        return Color.Black;
-                    case "fail":
-                        return Color.Red;
-                    case "notfit":
-                        return Color.Blue;
-                    default:
-                        return Color.Black;
-                }
-            }
-
-            public static string GetDisplayStringFromResult(string str)
-            {
-                switch (str)
-                {
-                    case "accept":
-                        return "符合";
-                    case "fail":
-                        return "不符合";
-                    case "notfit":
-                        return "不適用";
-                    default:
-                        return "未檢測";
-                }
             }
         }
     }
