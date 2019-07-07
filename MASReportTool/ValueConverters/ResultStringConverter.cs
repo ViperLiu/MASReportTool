@@ -12,18 +12,7 @@ namespace MASReportTool.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value.ToString().ToLower())
-            {
-                case "accept":
-                    return "符合";
-                case "fail":
-                    return "不符合";
-                case "notfit":
-                    return "不適用";
-                case "undetermin":
-                    return "未檢測";
-            }
-            return "ERROR";
+            return (value as ITestResult).GetDisplayString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
