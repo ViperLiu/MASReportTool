@@ -384,9 +384,11 @@ namespace MASReportTool.ViewModels
             {
                 return new RelayCommand(
                     (object obj) => {
-                        
-                        OpenFileDialog openFileDialog = new OpenFileDialog();
-                        openFileDialog.Filter = "jsonr檔|*.jsonr";
+
+                        OpenFileDialog openFileDialog = new OpenFileDialog
+                        {
+                            Filter = "jsonr檔|*.jsonr"
+                        };
                         var result = openFileDialog.ShowDialog();
                         string file = openFileDialog.FileName;
                         string extension = Path.GetExtension(file).ToLower();
@@ -414,10 +416,12 @@ namespace MASReportTool.ViewModels
             {
                 return new RelayCommand(
                     (object obj) => {
-                        SaveFileDialog outputReportDialog = new SaveFileDialog();
-                        outputReportDialog.Filter = "Word文件|*.docx";
-                        outputReportDialog.DefaultExt = ".docx";
-                        outputReportDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                        SaveFileDialog outputReportDialog = new SaveFileDialog
+                        {
+                            Filter = "Word文件|*.docx",
+                            DefaultExt = ".docx",
+                            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+                        };
                         var result = outputReportDialog.ShowDialog();
                         var file = outputReportDialog.FileName;
                         MASReport reportFile = new MASReport(Report);
@@ -509,10 +513,12 @@ namespace MASReportTool.ViewModels
 
         private void SaveAsNewFile()
         {
-            SaveFileDialog saveJsonrDialog = new SaveFileDialog();
-            saveJsonrDialog.Filter = "MAS報告|*.jsonr";
-            saveJsonrDialog.DefaultExt = ".jsonr";
-            saveJsonrDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            SaveFileDialog saveJsonrDialog = new SaveFileDialog
+            {
+                Filter = "MAS報告|*.jsonr",
+                DefaultExt = ".jsonr",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+            };
             var result = saveJsonrDialog.ShowDialog();
             var file = saveJsonrDialog.FileName;
             if (result == true)
