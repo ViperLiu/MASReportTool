@@ -18,7 +18,10 @@ namespace MASReportTool
 
         public void SaveFile(object report)
         {
-            string output = JsonConvert.SerializeObject(report);
+            string output = JsonConvert.SerializeObject(report, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+            });
             File.WriteAllText(FilePath, output);
         }
 
@@ -27,7 +30,10 @@ namespace MASReportTool
             using (StreamReader reader = File.OpenText(this.FilePath))
             {
                 var jsonStr = reader.ReadToEnd();
-                var report = JsonConvert.DeserializeObject<Report>(jsonStr);
+                var report = JsonConvert.DeserializeObject<Report>(jsonStr, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                });
                 report.LoadRuleContents();
                 report.CurrentOpenedFile = FilePath;
                 return report;
