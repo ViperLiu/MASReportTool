@@ -12,9 +12,9 @@ namespace MASReportTool
     {
         public List<SubRuleResult> SubRuleList { get; private set; }
 
-        private string _finalResult;
+        private ITestResult _finalResult;
         [JsonProperty]
-        public string FinalResult
+        public ITestResult FinalResult
         {
             get
             { return this._finalResult; }
@@ -35,23 +35,23 @@ namespace MASReportTool
         public RuleResults(RuleContents content)
         {
             this.Content = content;
-            this.FinalResult = "undetermin";
+            this.FinalResult = Result.Default;
             this.SubRuleList = new List<SubRuleResult>();
         }
 
         public void Accept()
         {
-            this.FinalResult = "accept";
+            this.FinalResult = Result.Accept;
         }
 
         public void Fail()
         {
-            this.FinalResult = "fail";
+            this.FinalResult = Result.Fail;
         }
 
         public void NotFit()
         {
-            this.FinalResult = "notfit";
+            this.FinalResult = Result.Notfit;
 
             for (int i = 0; i < this.SubRuleList.Count; i++)
             {
@@ -67,13 +67,13 @@ namespace MASReportTool
             {
                 sub.Reset();
             }
-            this.FinalResult = "donttest";
+            this.FinalResult = Result.DontTest;
             this.SubRuleList[0].Text = "此項不須檢測";
         }
 
         public void Reset()
         {
-            this.FinalResult = "undetermin";
+            this.FinalResult = Result.Default;
             foreach (var sub in SubRuleList)
             {
                 sub.Reset();

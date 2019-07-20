@@ -8,8 +8,8 @@ namespace MASReportTool
 {
     public class SubRuleResult : INotifyPropertyChanged
     {
-        private string _Result;
-        public string Result
+        private ITestResult _Result;
+        public ITestResult Result
         {
             get { return _Result; }
             set
@@ -48,7 +48,7 @@ namespace MASReportTool
         public SubRuleResult(SubRuleContents content)
         {
             this.Content = content;
-            this.Result = "undetermin";
+            this.Result = MASReportTool.Result.Default;
             this.Text = "";
             this.Pictures = new ObservableCollection<Picture>();
             this.Pictures.CollectionChanged += Pictures_CollectionChanged;
@@ -61,25 +61,25 @@ namespace MASReportTool
 
         public void Accept()
         {
-            this.Result = "accept";
+            this.Result = MASReportTool.Result.Accept;
             this.Text = this.Content.DefaultAcceptText;
         }
 
         public void Fail()
         {
-            this.Result = "fail";
+            this.Result = MASReportTool.Result.Fail;
             this.Text = this.Content.DefaultFailText;
         }
 
         public void NotFit()
         {
-            this.Result = "notfit";
+            this.Result = MASReportTool.Result.Notfit;
             this.Text = "";
         }
 
         public void Reset()
         {
-            this.Result = "undetermin";
+            this.Result = MASReportTool.Result.Default;
             this.Text = "";
             this.Pictures.Clear();
         }
