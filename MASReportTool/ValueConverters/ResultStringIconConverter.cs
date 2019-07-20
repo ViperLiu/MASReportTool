@@ -12,16 +12,7 @@ namespace MASReportTool.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value.ToString().ToLower())
-            {
-                case "accept":
-                    return "/assets/pics/icon_accept.png";
-                case "fail":
-                    return "/assets/pics/icon_fail.png";
-                case "notfit":
-                    return "/assets/pics/icon_notfit.png";
-            }
-            return "";
+            return (value as ITestResult).GetIconPath();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
