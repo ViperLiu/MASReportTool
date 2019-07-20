@@ -118,11 +118,14 @@ namespace MASReportTool
 
         private List<Table> GetResultTables()
         {
-            var tbs = _templateDocx.Tables;
+            var tables = _templateDocx.Tables;
             List<Table> targetTables = new List<Table>();
-            for (var i = 4; i < tbs.Count; i++)
+            foreach (var table in tables)
             {
-                targetTables.Add(tbs[i]);
+                if (table.Rows[0].Cells[0].Paragraphs.First().Text == "檢測基準")
+                {
+                    targetTables.Add(table);
+                }
             }
             Console.WriteLine(targetTables.Count);
             return targetTables;
@@ -130,7 +133,15 @@ namespace MASReportTool
 
         private Table GetOverviewTable()
         {
-            return _templateDocx.Tables[1];
+            var tables = _templateDocx.Tables;
+            foreach(var table in tables)
+            {
+                if(table.Rows[0].Cells[1].Paragraphs.First().Text == "技術要求")
+                {
+                    return table;
+                }
+            }
+            return null;
         }
 
         private void WriteTestData(Table resultTable, RuleResults currentRule)
