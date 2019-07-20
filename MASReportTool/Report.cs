@@ -333,20 +333,20 @@ namespace MASReportTool
         {
             if (e.PropertyName == "IsSaved")
                 return;
-            this.MarkAsNotSaved(e.PropertyName);
+            this.MarkAsNotSaved();
         }
 
         private void Result_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.MarkAsNotSaved(e.PropertyName);
+            this.MarkAsNotSaved();
         }
 
         private void SubResult_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.MarkAsNotSaved(e.PropertyName);
+            this.MarkAsNotSaved();
         }
 
-        public void MarkAsNotSaved(string name = "")
+        public void MarkAsNotSaved()
         {
             this.IsSaved = false;
         }
