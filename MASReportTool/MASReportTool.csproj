@@ -93,7 +93,6 @@
     <Compile Include="ViewModels\FunctionBarViewModel.cs" />
     <Compile Include="ValueConverters\IsSavedColorConverter.cs" />
     <Compile Include="JsonFileController.cs" />
-    <Compile Include="MASData.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="RelayCommand.cs" />
