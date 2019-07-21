@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MASReportTool.ValueConverters
 {
@@ -12,7 +14,16 @@ namespace MASReportTool.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as ITestResult).GetIconPath();
+            var iconPath = (value as ITestResult).GetIconPath();
+            ImageSource imgSource = new BitmapImage();
+            if (iconPath == "")
+            {
+                return imgSource;
+            }
+            Uri uri = new Uri(iconPath, UriKind.Relative);
+            imgSource = new BitmapImage(uri);
+            return imgSource;
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
