@@ -245,6 +245,7 @@ namespace MASReportTool.ViewModels
                     (object obj) => {
                         var subRule = obj as SubRuleResult;
                         CurrentSelectedSubRule = subRule;
+                        CurrentSelectedPic = subRule.Pictures.Count < 1 ? null : subRule.Pictures[0];
                         IsPicturePanelShown = true;
                     },
                     () => { return true; }
