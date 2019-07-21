@@ -12,13 +12,26 @@ namespace MASReportTool.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((string)parameter == value.ToString());
+            ITestResult result;
+            try
+            {
+                result = (ITestResult)value;
+                if (result.GetDisplayString() == "符合" && (string)parameter == "accept")
+                    return true;
+                else if (result.GetDisplayString() == "不符合" && (string)parameter == "fail")
+                    return true;
+                else return false;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((bool)value)
-                return parameter;
             return Binding.DoNothing;
         }
     }
