@@ -458,20 +458,6 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-                <!--<ContextMenu x:Key="PicContextMenu">
-                    <MenuItem Header="上移一張"
-                              Name="CM_PicMoveUp"
-                              Tag="{Binding ., Mode=OneWay}"
-                              Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.PictureMoveUp}"
-                              CommandParameter="{Binding ElementName=CM_PicMoveUp, Path=Tag}"/>
-                    <MenuItem Header="下移一張"
-                              Name="CM_PicMoveDown"
-                              Tag="{Binding ., Mode=OneWay}"/>
-                    <Separator/>
-                    <MenuItem Header="刪除圖片"
-                              Name="CM_DeletePic"
-                              Tag="{Binding ., Mode=OneWay}"/>
-                </ContextMenu>-->
             </Grid.Resources>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DragEnter">
