@@ -506,6 +506,7 @@ namespace MASReportTool.ViewModels
             Console.WriteLine("Drop");
             var files = ((string[])e.Data.GetData(DataFormats.FileDrop));
             CurrentSelectedSubRule.AddPictures(files);
+            CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
         }
 
         private void SaveFile(string file)
