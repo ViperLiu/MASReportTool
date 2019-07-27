@@ -505,17 +505,6 @@
                               AllowDrop="True"
                               Name="PicturesPanel" ItemsSource="{Binding CurrentSelectedSubRule.Pictures}"
                               Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
-                    <ItemsControl.Resources>
-                        <ContextMenu x:Key="context">
-                            <MenuItem Header="上移一張"
-                                      Name="CM_PicMoveUp" Command="{Binding PictureMoveUp, Mode=OneWay}"/>
-                            <MenuItem Header="下移一張"
-                                      Name="CM_PicMoveDown"/>
-                            <Separator/>
-                            <MenuItem Header="刪除圖片"
-                                      Name="CM_DeletePic"/>
-                        </ContextMenu>
-                    </ItemsControl.Resources>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Image Margin="5"
