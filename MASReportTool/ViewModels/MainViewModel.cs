@@ -421,10 +421,15 @@ namespace MASReportTool.ViewModels
                         {
                             Filter = "Word文件|*.docx",
                             DefaultExt = ".docx",
-                            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+                            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+                            FileName = Path.GetFileNameWithoutExtension(Report.CurrentOpenedFile)
                         };
                         var result = outputReportDialog.ShowDialog();
                         var file = outputReportDialog.FileName;
+
+                        if (result == false)
+                            return;
+
                         MASReport reportFile = new MASReport(Report);
                         try
                         {
