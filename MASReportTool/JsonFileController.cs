@@ -39,8 +39,9 @@ namespace MASReportTool
                         TypeNameHandling = TypeNameHandling.Objects
                     });
                 }
-                catch
+                catch(Exception e)
                 {
+                    Console.WriteLine("[WARNING]：" + e.Message);
                     Console.WriteLine("偵測到舊版本的 .jsonr 存檔");
                     report = LoadOldFile();
                 }
