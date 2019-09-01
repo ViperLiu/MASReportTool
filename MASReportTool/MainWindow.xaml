@@ -469,7 +469,7 @@
                                          TargetObject="{Binding}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            
+
 
             <Label Grid.Column="3"
                    Content="+"
@@ -478,8 +478,14 @@
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    ToolTip="新增圖片"
-                   Name="AddPicture"/>
-
+                   Name="AddPicture">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseUp">
+                        <i:InvokeCommandAction 
+                            Command="{Binding AddPicture}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
             <Label Grid.Column="4"
                    Content="×"
                    FontWeight="Bold"

@@ -253,6 +253,32 @@ namespace MASReportTool.ViewModels
             }
         }
 
+        public ICommand AddPicture
+        {
+            get
+            {
+                return new RelayCommand(
+                    (object obj) => {
+
+                        OpenFileDialog openFileDialog = new OpenFileDialog
+                        {
+                            Filter = "圖片檔|*.jpg; *.png; *.gif",
+                            Multiselect = true
+                        };
+                        var result = openFileDialog.ShowDialog();
+                        var files = openFileDialog.FileNames;
+
+                        if (result == false)
+                            return;
+
+                        CurrentSelectedSubRule.AddPictures(files);
+                        CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
+                    },
+                    () => { return true; }
+                    );
+            }
+        }
+
         public ICommand ClosePicturePanel
         {
             get
