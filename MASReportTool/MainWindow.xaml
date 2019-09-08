@@ -9,7 +9,7 @@
         xmlns:converter="clr-namespace:MASReportTool.ValueConverters"
         xmlns:viewmodel="clr-namespace:MASReportTool.ViewModels"
         mc:Ignorable="d"
-        Title="MASReportTool" 
+        Title="{Binding Report.CurrentOpenedFile}" 
         Height="674" 
         Width="937" 
         MinHeight="674" 
