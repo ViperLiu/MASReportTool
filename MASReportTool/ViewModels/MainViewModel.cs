@@ -350,6 +350,7 @@ namespace MASReportTool.ViewModels
                         var picture = obj as Picture;
                         var index = picture.Index;
                         CurrentSelectedSubRule.DeletePicture(index);
+                        CurrentSelectedPic = null;
                         Console.WriteLine("Picture Deleted");
                     },
                     () => { return true; }
