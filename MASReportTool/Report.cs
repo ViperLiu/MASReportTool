@@ -250,6 +250,7 @@ namespace MASReportTool
             set
             {
                 _CurrentOpenedFile = value;
+                OnPropertyChanged("CurrentOpenedFile");
             }
         }
 
