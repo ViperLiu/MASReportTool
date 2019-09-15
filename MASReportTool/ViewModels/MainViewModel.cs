@@ -350,8 +350,8 @@ namespace MASReportTool.ViewModels
                         var picture = obj as Picture;
                         var index = picture.Index;
                         CurrentSelectedSubRule.DeletePicture(index);
+                        Console.WriteLine("[INFO] 刪除圖片：" + picture.FullPath);
                         CurrentSelectedPic = null;
-                        Console.WriteLine("Picture Deleted");
                     },
                     () => { return true; }
                     );
@@ -364,7 +364,6 @@ namespace MASReportTool.ViewModels
             {
                 return new RelayCommand(
                     (object obj) => {
-                        Console.WriteLine(Report.CurrentOpenedFile);
                         //如果檔案存在就直接存檔
                         if (File.Exists(Report.CurrentOpenedFile))
                         {
@@ -374,7 +373,6 @@ namespace MASReportTool.ViewModels
 
                         //檔案不存在就開啟存檔視窗
                         SaveAsNewFile();
-                        Console.WriteLine("Save Json File");
                     },
                     () => { return true; }
                     );
@@ -427,6 +425,7 @@ namespace MASReportTool.ViewModels
                                 JsonFileController json = new JsonFileController(file);
                                 this.Report = json.LoadFile();
                                 this.Report.RegistPropertyChangedEvent();
+                                Console.WriteLine("[INFO] 載入檔案：" + Report.CurrentOpenedFile);
                             }
                             else
                             {
@@ -521,7 +520,6 @@ namespace MASReportTool.ViewModels
         {
             var file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
             var extension = System.IO.Path.GetExtension(file).ToLower();
-            Console.WriteLine("extension : " + extension);
             if (extension == ".jpg" || extension == ".png")
                 e.Effects = DragDropEffects.Copy;
             else
@@ -531,7 +529,6 @@ namespace MASReportTool.ViewModels
 
         public void PicturePanelDrop(object sender, DragEventArgs e)
         {
-            Console.WriteLine("Drop");
             var files = ((string[])e.Data.GetData(DataFormats.FileDrop));
             CurrentSelectedSubRule.AddPictures(files);
             CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
@@ -539,7 +536,7 @@ namespace MASReportTool.ViewModels
 
         private void SaveFile(string file)
         {
-            Console.WriteLine("saved : " + file);
+            Console.WriteLine("[INFO] 儲存檔案 : " + file);
             JsonFileController json = new JsonFileController(file);
             json.SaveFile(Report);
             Report.CurrentOpenedFile = file;
