@@ -426,6 +426,7 @@ namespace MASReportTool.ViewModels
                             {
                                 JsonFileController json = new JsonFileController(file);
                                 this.Report = json.LoadFile();
+                                this.Report.RegistPropertyChangedEvent();
                             }
                             else
                             {

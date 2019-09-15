@@ -292,7 +292,7 @@ namespace MASReportTool
                 foreach(var sub in rule.Value.SubRuleContentsList)
                 {
                     SubRuleResult subResult = new SubRuleResult(sub);
-                    subResult.PropertyChanged += this.SubResult_PropertyChanged; ;
+                    subResult.PropertyChanged += this.SubResult_PropertyChanged;
                     result.SubRuleList.Add(subResult);
                     subRuleNumber++;
                 }
@@ -301,7 +301,7 @@ namespace MASReportTool
             }
 
             this.CurrentOpenedFile = "*未儲存的報告.jsonr";
-            this.PropertyChanged += this.Report_PropertyChanged; ;
+            this.PropertyChanged += this.Report_PropertyChanged;
         }
 
         public void LoadRuleContents()
@@ -317,6 +317,20 @@ namespace MASReportTool
                 {
                     this.RuleList[rule.Key].SubRuleList[subRuleNumber].Content = sub;
                     subRuleNumber++;
+                }
+            }
+        }
+
+        public void RegistPropertyChangedEvent()
+        {
+            this.PropertyChanged += this.Report_PropertyChanged;
+
+            foreach(var rule in RuleList)
+            {
+                rule.Value.PropertyChanged += Result_PropertyChanged;
+                foreach(var sub in rule.Value.SubRuleList)
+                {
+                    sub.PropertyChanged += SubResult_PropertyChanged;
                 }
             }
         }
