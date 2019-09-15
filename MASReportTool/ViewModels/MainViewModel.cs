@@ -541,8 +541,8 @@ namespace MASReportTool.ViewModels
             Console.WriteLine("saved : " + file);
             JsonFileController json = new JsonFileController(file);
             json.SaveFile(Report);
-            Report.MarkAsSaved();
             Report.CurrentOpenedFile = file;
+            Report.MarkAsSaved();
         }
 
         private void SaveAsNewFile()
