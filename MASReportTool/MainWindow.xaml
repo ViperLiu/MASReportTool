@@ -39,6 +39,7 @@
         <converter:ResultStringBoolConverter x:Key="ResultStringBoolConverter" />
         <converter:ResultStringConverter x:Key="ResultStringConverter" />
         <converter:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
+        <converter:UriToCachedImageConverter x:Key="UriToCachedImageConverter" />
     </Window.Resources>
     <Window.DataContext>
         <viewmodel:MainViewModel/>
@@ -515,7 +516,7 @@
                         <DataTemplate>
                             <Image Margin="5"
                                    Name="Thumbnail"
-                                   Source="{Binding FullPath, Mode=OneWay}"
+                                   Source="{Binding FullPath, Mode=OneWay, Converter={StaticResource UriToCachedImageConverter}}"
                                    Tag="{Binding .}">
                                 <Image.ContextMenu>
                                     <ContextMenu>
@@ -557,7 +558,7 @@
                        Grid.Row="0"
                        Margin="5"
                        Name="LargePicture"
-                       Source="{Binding CurrentSelectedPic.FullPath, Mode=OneWay}"/>
+                       Source="{Binding CurrentSelectedPic.FullPath, Mode=OneWay, Converter={StaticResource UriToCachedImageConverter}}"/>
                 <TextBox Grid.Row="1"
                          Margin="5"
                          Style="{StaticResource DarkTheme}"

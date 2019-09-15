@@ -90,6 +90,7 @@
     </ApplicationDefinition>
     <Compile Include="BindingProxy.cs" />
     <Compile Include="MASReport.cs" />
+    <Compile Include="ValueConverters\UriToCachedImageConverter.cs" />
     <Compile Include="ViewModels\FunctionBarViewModel.cs" />
     <Compile Include="ValueConverters\IsSavedColorConverter.cs" />
     <Compile Include="JsonFileController.cs" />
@@ -161,6 +162,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="assets\pics\icon_open_file.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\pics\icon_image_not_found.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Content Include="assets\基準30.json">
