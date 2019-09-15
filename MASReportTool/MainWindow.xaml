@@ -403,7 +403,7 @@
                     <ItemsControl Name="SubRuleResults" ItemsSource="{Binding CurrentSelectedRule.SubRuleList}">
                         <ItemsControl.Resources>
                             <DataTemplate DataType="{x:Type local:SubRuleResult}">
-                                <TextBox Text="{Binding Text, Mode=TwoWay}"
+                                <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          TextWrapping="Wrap"
                                          AcceptsReturn="True"
                                          Height="Auto"
