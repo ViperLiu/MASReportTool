@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,12 +10,19 @@ using System.Threading.Tasks;
 
 namespace MASReportTool.ViewModels
 {
-    class TreeViewItemsViewModel
+    class TreeViewItemsViewModel : INotifyPropertyChanged
     {
         public int Level { get; private set; }
         public string Title { get; private set; }
         public ObservableCollection<TreeViewItemsViewModel> Items { get; private set; }
         public RuleResults RuleResult { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
         public static List<TreeViewItemsViewModel> GetTreeViewItems(Report report)
         {
