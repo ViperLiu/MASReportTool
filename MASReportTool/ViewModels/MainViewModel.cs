@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -19,355 +20,49 @@ namespace MASReportTool.ViewModels
         //private Dictionary<string, RuleContents> RuleContents { get; set; }
         public static Dictionary<string, RuleContents> RuleContent;
 
-        private Report _Report;
-        public Report Report
+        private ObservableCollection<TabViewModel> _TabItems;
+        public ObservableCollection<TabViewModel> TabItems
         {
-            get { return _Report; }
-            private set
-            {
-                if(value != _Report)
-                {
-                    _Report = value;
-                    OnPropertyChanged("Report");
-                    TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(_Report);
-                    CurrentSelectedRule = TreeViewItems[0].Items[0].RuleResult;
-                }
-            }
-        }
-
-        private List<TreeViewItemsViewModel> _TreeViewItems;
-        public List<TreeViewItemsViewModel> TreeViewItems
-        {
-            get { return _TreeViewItems; }
-            private set
-            {
-                if (value != _TreeViewItems)
-                {
-                    this._TreeViewItems = value;
-                    OnPropertyChanged("TreeViewItems");
-                }
-            }
-        }
-
-        private Picture _CurrentSelectedPic;
-        public Picture CurrentSelectedPic
-        {
-            get { return _CurrentSelectedPic; }
+            get{ return _TabItems; }
             set
             {
-                if (value != _CurrentSelectedPic)
+                if (value != _TabItems)
                 {
-                    this._CurrentSelectedPic = value;
-                    OnPropertyChanged("CurrentSelectedPic");
+                    _TabItems = value;
+                    OnPropertyChanged("TabItems");
                 }
             }
         }
 
-        private bool _IsPicturePanelShown = false;
-        public bool IsPicturePanelShown
+        private TabViewModel _currentSelectedTab;
+        public TabViewModel CurrentSelectedTab
         {
-            get { return _IsPicturePanelShown; }
+            get { return _currentSelectedTab; }
             set
             {
-                if (value != _IsPicturePanelShown)
+                if(value != _currentSelectedTab)
                 {
-                    this._IsPicturePanelShown = value;
-                    OnPropertyChanged("IsPicturePanelShown");
+                    _currentSelectedTab = value;
+                    OnPropertyChanged("CurrentSelectedTab");
                 }
             }
         }
 
-        private RuleResults _CurrentSelectedRule;
-        public RuleResults CurrentSelectedRule
-        {
-            get { return _CurrentSelectedRule; }
-            set
-            {
-                if (value != _CurrentSelectedRule)
-                {
-                    _CurrentSelectedRule = value;
-                    OnPropertyChanged("CurrentSelectedRule");
-                }
-            }
-        }
 
-        private SubRuleResult _CurrentSelectedSubRule;
-        public SubRuleResult CurrentSelectedSubRule
-        {
-            get { return _CurrentSelectedSubRule; }
-            set
-            {
-                if (value != _CurrentSelectedSubRule)
-                {
-                    _CurrentSelectedSubRule = value;
-                    OnPropertyChanged("CurrentSelectedSubRule");
-                }
-            }
-        }
-
-        private string _currentRuleNumber;
-        public string CurrentRuleNumber
-        {
-            get { return _currentRuleNumber; }
-            set
-            {
-                if (value != _currentRuleNumber)
-                {
-                    _currentRuleNumber = value;
-                    OnPropertyChanged("CurrentRuleNumber");
-                }
-            }
-        }
-
-        private int _currentSubRuleIndex;
-        public int CurrentSubRuleIndex
-        {
-            get { return _currentSubRuleIndex; }
-            set
-            {
-                if (value != _currentSubRuleIndex)
-                {
-                    _currentSubRuleIndex = value;
-                    OnPropertyChanged("CurrentSubRuleIndex");
-                }
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public ICommand SelectedItemChanged
-        {
-            get {
-                return new RelayCommand(
-                    (object obj) => {
-                        var item = obj as TreeViewItemsViewModel;
-                        if (item.Level == 0)
-                            return;
-                        CurrentSelectedRule = item.RuleResult;
-                        Console.WriteLine(item.Title);
-                    }, 
-                    () => {
-                        return true;
-                    }
-                    );
-            }
-        }
-
-        public ICommand ClassChanged
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        var rb = obj as RadioButton;
-                        if (rb.IsChecked == false)
-                            return;
-                        Report.Class = int.Parse(rb.Tag.ToString());
-                        TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(Report);
-                        CurrentSelectedRule = TreeViewItems[0].Items[0].RuleResult;
-                        Console.WriteLine(rb.Tag);
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand RuleAccepted
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        CurrentSelectedRule.Accept();
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand RuleFailed
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        CurrentSelectedRule.Fail();
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand RuleNotfit
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        CurrentSelectedRule.NotFit();
-                    },
-                    () => {
-                        if (CurrentSelectedRule.Content.NotFitText == "None")
-                            return false;
-                        else
-                            return true;
-                    }
-                    );
-            }
-        }
-
-        public ICommand SubRuleResultChanged
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        var rb = obj as RadioButton;
-                        if (rb.IsChecked == false)
-                            return;
-                        var btnStr = rb.Content.ToString();
-                        var subRule = rb.Tag as SubRuleResult;
-                        if (btnStr == "符合")
-                            subRule.Accept();
-                        else if (btnStr == "不符合")
-                            subRule.Fail();
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand PictureButtonClicked
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        var subRule = obj as SubRuleResult;
-                        CurrentSelectedSubRule = subRule;
-                        CurrentSelectedPic = subRule.Pictures.Count < 1 ? null : subRule.Pictures[0];
-                        IsPicturePanelShown = true;
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand AddPicture
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-
-                        OpenFileDialog openFileDialog = new OpenFileDialog
-                        {
-                            Filter = "圖片檔|*.jpg; *.png; *.gif",
-                            Multiselect = true
-                        };
-                        var result = openFileDialog.ShowDialog();
-                        var files = openFileDialog.FileNames;
-
-                        if (result == false)
-                            return;
-
-                        CurrentSelectedSubRule.AddPictures(files);
-                        CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand ClosePicturePanel
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        IsPicturePanelShown = false;
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand ThumbnailClicked
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        if (Mouse.RightButton == MouseButtonState.Pressed)
-                            return;
-                        var picture = obj as Picture;
-                        CurrentSelectedPic = picture;
-                        Console.WriteLine(picture.FullPath);
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand PictureMoveUp
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        var picture = obj as Picture;
-                        var index = picture.Index;
-                        CurrentSelectedSubRule.SwapPictures(index, index - 1);
-                        Console.WriteLine("Picture Up");
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand PictureMoveDown
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        var picture = obj as Picture;
-                        var index = picture.Index;
-                        CurrentSelectedSubRule.SwapPictures(index, index + 1);
-                        Console.WriteLine("Picture Down");
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
-
-        public ICommand PictureDeleted
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) => {
-                        var picture = obj as Picture;
-                        var index = picture.Index;
-                        CurrentSelectedSubRule.DeletePicture(index);
-                        Console.WriteLine("[INFO] 刪除圖片：" + picture.FullPath);
-                        CurrentSelectedPic = null;
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
 
         public ICommand SaveJsonFile
         {
             get
             {
                 return new RelayCommand(
-                    (object obj) => {
+                    (object obj) =>
+                    {
                         //如果檔案存在就直接存檔
-                        if (File.Exists(Report.CurrentOpenedFile))
+                        if (File.Exists(TabItems[0].Report.CurrentOpenedFile))
                         {
-                            SaveFile(Report.CurrentOpenedFile);
+                            SaveFile(TabItems[0].Report.CurrentOpenedFile);
                             return;
                         }
 
@@ -384,20 +79,9 @@ namespace MASReportTool.ViewModels
             get
             {
                 return new RelayCommand(
-                    (object obj) => {
-                        if (Report.IsSaved)
-                        {
-                            Report.Reset();
-                            return;
-                        }
-                        var result = MessageBox.Show(
-                            "開始新的報告前，是否先存檔？", "尚未存檔", MessageBoxButton.YesNoCancel);
-                        if (result == MessageBoxResult.Yes)
-                            SaveJsonFile.Execute(new object());
-                        else if (result == MessageBoxResult.No)
-                            Report.Reset();
-                        else if (result == MessageBoxResult.Cancel)
-                            return;
+                    (object obj) =>
+                    {
+                        TabItems.Add(new TabViewModel());
                     },
                     () => { return true; }
                     );
@@ -409,7 +93,8 @@ namespace MASReportTool.ViewModels
             get
             {
                 return new RelayCommand(
-                    (object obj) => {
+                    (object obj) =>
+                    {
 
                         OpenFileDialog openFileDialog = new OpenFileDialog
                         {
@@ -423,9 +108,9 @@ namespace MASReportTool.ViewModels
                             if (extension == ".jsonr")
                             {
                                 JsonFileController json = new JsonFileController(file);
-                                this.Report = json.LoadFile();
-                                this.Report.RegistPropertyChangedEvent();
-                                Console.WriteLine("[INFO] 載入檔案：" + Report.CurrentOpenedFile);
+                                TabItems[0].Report = json.LoadFile();
+                                TabItems[0].Report.RegistPropertyChangedEvent();
+                                Console.WriteLine("[INFO] 載入檔案：" + TabItems[0].Report.CurrentOpenedFile);
                             }
                             else
                             {
@@ -443,13 +128,14 @@ namespace MASReportTool.ViewModels
             get
             {
                 return new RelayCommand(
-                    (object obj) => {
+                    (object obj) =>
+                    {
                         SaveFileDialog outputReportDialog = new SaveFileDialog
                         {
                             Filter = "Word文件|*.docx",
                             DefaultExt = ".docx",
                             InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
-                            FileName = Path.GetFileNameWithoutExtension(Report.CurrentOpenedFile)
+                            FileName = Path.GetFileNameWithoutExtension(TabItems[0].Report.CurrentOpenedFile)
                         };
                         var result = outputReportDialog.ShowDialog();
                         var file = outputReportDialog.FileName;
@@ -457,7 +143,7 @@ namespace MASReportTool.ViewModels
                         if (result == false)
                             return;
 
-                        MASReport reportFile = new MASReport(Report);
+                        MASReport reportFile = new MASReport(TabItems[0].Report);
                         try
                         {
                             reportFile.BuildReport(file);
@@ -475,11 +161,37 @@ namespace MASReportTool.ViewModels
             }
         }
 
+        public ICommand SelectedTabChanged
+        {
+            get
+            {
+                return new RelayCommand(
+                    (object obj) =>
+                    {
+                        var indexBefore = TabItems.IndexOf(CurrentSelectedTab);
+                        var indexAfter = (int)obj;
+                        TabItems[indexBefore].DisableClassChangedCommand();
+                        Console.WriteLine("ClassChangedDisable, Index : " + indexBefore);
+                        if (!TabItems[indexAfter].IsClassChangedEnable)
+                        {
+                            TabItems[indexAfter].EnableClassChangedCommand();
+                            Console.WriteLine("ClassChangedEnable, Index : " + indexAfter);
+                        }
+                        CurrentSelectedTab = TabItems[indexAfter];
+                        Console.WriteLine("Tabs changed");
+                    },
+                    () => { return true; }
+                    );
+            }
+        }
+
 
         public MainViewModel()
         {
             RuleContent = LoadRuleContents();
-            Report = new Report();
+            TabItems = new ObservableCollection<TabViewModel>();
+            TabItems.Add(new TabViewModel());
+            CurrentSelectedTab = TabItems[0];
         }
 
         protected void OnPropertyChanged(string name)
@@ -516,31 +228,31 @@ namespace MASReportTool.ViewModels
             return ruleContents;
         }
 
-        public void PicturePanelDragEnter(object sender, DragEventArgs e)
-        {
-            var file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
-            var extension = System.IO.Path.GetExtension(file).ToLower();
-            if (extension == ".jpg" || extension == ".png")
-                e.Effects = DragDropEffects.Copy;
-            else
-                e.Effects = DragDropEffects.None;
+        //public void PicturePanelDragEnter(object sender, DragEventArgs e)
+        //{
+        //    var file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+        //    var extension = System.IO.Path.GetExtension(file).ToLower();
+        //    if (extension == ".jpg" || extension == ".png")
+        //        e.Effects = DragDropEffects.Copy;
+        //    else
+        //        e.Effects = DragDropEffects.None;
 
-        }
+        //}
 
-        public void PicturePanelDrop(object sender, DragEventArgs e)
-        {
-            var files = ((string[])e.Data.GetData(DataFormats.FileDrop));
-            CurrentSelectedSubRule.AddPictures(files);
-            CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
-        }
+        //public void PicturePanelDrop(object sender, DragEventArgs e)
+        //{
+        //    var files = ((string[])e.Data.GetData(DataFormats.FileDrop));
+        //    CurrentSelectedSubRule.AddPictures(files);
+        //    CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
+        //}
 
         private void SaveFile(string file)
         {
             Console.WriteLine("[INFO] 儲存檔案 : " + file);
             JsonFileController json = new JsonFileController(file);
-            json.SaveFile(Report);
-            Report.CurrentOpenedFile = file;
-            Report.MarkAsSaved();
+            json.SaveFile(TabItems[0].Report);
+            TabItems[0].Header = TabItems[0].Report.CurrentOpenedFile = file;
+            TabItems[0].Report.MarkAsSaved();
         }
 
         private void SaveAsNewFile()
