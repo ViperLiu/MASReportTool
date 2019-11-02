@@ -110,6 +110,8 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PicturePageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
+    <Compile Include="ViewModels\SubRuleViewModel.cs" />
+    <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="ViewModels\TreeViewItemsViewModel.cs" />
     <Compile Include="ValueConverters\VisibilityBoolConverter.cs" />
     <Page Include="MainWindow.xaml">
