@@ -1,8 +1,9 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,21 @@ namespace MASReportTool.ViewModels
 {
     class TreeViewItemsViewModel : INotifyPropertyChanged
     {
+        private bool _isBorderVisible = false;
+
+        public bool IsBorderVisible
+        {
+            get { return _isBorderVisible; }
+            set
+            {
+                if(value != _isBorderVisible)
+                {
+                    _isBorderVisible = value;
+                    OnPropertyChanged("IsBorderVisible");
+                }
+            }
+        }
+
         public int Level { get; private set; }
         public string Title { get; private set; }
         public ObservableCollection<TreeViewItemsViewModel> Items { get; private set; }
