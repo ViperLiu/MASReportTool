@@ -175,7 +175,7 @@ namespace MASReportTool.ViewModels
                         SubRulesList = GetSubRuleList();
                         Console.WriteLine(item.Title);
                     },
-                    (object obj) => {
+                    () => {
                         return true;
                     }
                     );
@@ -391,11 +391,6 @@ namespace MASReportTool.ViewModels
         {
             Report = new Report();
             SubRulesList = GetSubRuleList();
-        }
-
-        private void SetCurrentSelectedRule(RuleResults rule)
-        {
-            CurrentSelectedRule = rule;
         }
 
         public void DisableClassChangedCommand()
