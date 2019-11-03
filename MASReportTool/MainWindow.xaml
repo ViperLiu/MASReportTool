@@ -151,6 +151,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding Header}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" UseLayoutRounding="True"/>
                             <Button Grid.Column="1" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="15" MinHeight="15" Margin="10,0,0,0" BorderThickness="0">×</Button>
+                                Text="{Binding Report.CurrentOpenedFile}"
                         </Grid>
                     </WrapPanel>
                 </DataTemplate>
