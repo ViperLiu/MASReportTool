@@ -42,6 +42,7 @@
         <converter:ResultStringConverter x:Key="ResultStringConverter" />
         <converter:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
         <converter:UriToCachedImageConverter x:Key="UriToCachedImageConverter" />
+        <converter:VisibilityNumberValueConverter x:Key="VisibilityNumberValueConverter" />
     </Window.Resources>
     <Window.DataContext>
         <viewmodel:MainViewModel />
@@ -234,7 +235,7 @@
                                 </i:Interaction.Triggers>
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate DataType="{x:Type viewmodel:TreeViewItemsViewModel}" ItemsSource="{Binding Items}">
-                                        <Border BorderBrush="White" BorderThickness="2">
+                                        <Border BorderBrush="White" BorderThickness="{Binding IsBorderVisible, Mode=OneWay, Converter={StaticResource VisibilityNumberValueConverter}}">
                                             <WrapPanel>
 
                                                 <TextBlock Text="{Binding Title}" />

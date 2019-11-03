@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace MASReportTool.ViewModels
                     _Report = value;
                     OnPropertyChanged("Report");
                     TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(_Report);
-                    CurrentSelectedRule = TreeViewItems[0].Items[0].RuleResult;
+                    SetCurrentSelectedRule(TreeViewItems[0].Items[0]);
                 }
             }
         }
@@ -49,7 +50,7 @@ namespace MASReportTool.ViewModels
         private string _Header;
         public string Header
         {
-            get { return Path.GetFileNameWithoutExtension(Report.CurrentOpenedFile); }
+            get { return Path.GetFileNameWithoutExtension(_Header); }
             set
             {
                 if(value != _Header)
@@ -158,6 +159,8 @@ namespace MASReportTool.ViewModels
             }
         }
 
+        private TreeViewItemsViewModel _currentedTreeviewItem;
+
         public bool IsClassChangedEnable = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -171,7 +174,7 @@ namespace MASReportTool.ViewModels
                         var item = obj as TreeViewItemsViewModel;
                         if (item.Level == 0)
                             return;
-                        CurrentSelectedRule = item.RuleResult;
+                        SetCurrentSelectedRule(item);
                         SubRulesList = GetSubRuleList();
                         Console.WriteLine(item.Title);
                     },
@@ -193,7 +196,7 @@ namespace MASReportTool.ViewModels
                             return;
                         Report.Class = int.Parse(rb.Tag.ToString());
                         TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(Report);
-                        CurrentSelectedRule = TreeViewItems[0].Items[0].RuleResult;
+                        SetCurrentSelectedRule(TreeViewItems[0].Items[0]);
                         SubRulesList = GetSubRuleList();
                         Console.WriteLine("Class Changed");
                     },
@@ -390,6 +393,7 @@ namespace MASReportTool.ViewModels
         public TabViewModel()
         {
             Report = new Report();
+            Header = Report.CurrentOpenedFile;
             SubRulesList = GetSubRuleList();
         }
 
@@ -401,6 +405,21 @@ namespace MASReportTool.ViewModels
         public void EnableClassChangedCommand()
         {
             IsClassChangedEnable = true;
+        }
+
+        private void SetCurrentSelectedRule(TreeViewItemsViewModel treeViewItem)
+        {
+            CurrentSelectedRule = treeViewItem.RuleResult;
+            treeViewItem.IsBorderVisible = true;
+
+            var originalSelectedTreeViewItem = _currentedTreeviewItem;
+            _currentedTreeviewItem = treeViewItem;
+            
+            if (originalSelectedTreeViewItem == null)
+                return;
+            originalSelectedTreeViewItem.IsBorderVisible = false;
+            
+            
         }
 
         private List<SubRuleViewModel> GetSubRuleList()
