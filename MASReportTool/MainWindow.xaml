@@ -43,6 +43,7 @@
         <converter:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
         <converter:UriToCachedImageConverter x:Key="UriToCachedImageConverter" />
         <converter:VisibilityNumberValueConverter x:Key="VisibilityNumberValueConverter" />
+        <converter:CurrentOpenedFileToTabItemTextConverter x:Key="CurrentOpenedFileToTabItemTextConverter" />
     </Window.Resources>
     <Window.DataContext>
         <viewmodel:MainViewModel />
