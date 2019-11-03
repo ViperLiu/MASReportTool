@@ -110,7 +110,6 @@ namespace MASReportTool.ViewModels
                                 JsonFileController json = new JsonFileController(file);
                                 CurrentSelectedTab.Report = json.LoadFile();
                                 CurrentSelectedTab.Report.RegistPropertyChangedEvent();
-                                CurrentSelectedTab.Header = CurrentSelectedTab.Report.CurrentOpenedFile;
                                 Console.WriteLine("[INFO] 載入檔案：" + CurrentSelectedTab.Report.CurrentOpenedFile);
                             }
                             else
@@ -252,7 +251,7 @@ namespace MASReportTool.ViewModels
             Console.WriteLine("[INFO] 儲存檔案 : " + file);
             JsonFileController json = new JsonFileController(file);
             json.SaveFile(CurrentSelectedTab.Report);
-            CurrentSelectedTab.Header = CurrentSelectedTab.Report.CurrentOpenedFile = file;
+            CurrentSelectedTab.Report.CurrentOpenedFile = file;
             CurrentSelectedTab.Report.MarkAsSaved();
         }
 

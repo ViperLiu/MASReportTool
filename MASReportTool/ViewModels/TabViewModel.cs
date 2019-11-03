@@ -47,20 +47,6 @@ namespace MASReportTool.ViewModels
             }
         }
 
-        private string _Header;
-        public string Header
-        {
-            get { return Path.GetFileNameWithoutExtension(_Header); }
-            set
-            {
-                if(value != _Header)
-                {
-                    _Header = value;
-                    OnPropertyChanged("Header");
-                }
-            }
-        }
-
         private List<TreeViewItemsViewModel> _TreeViewItems;
         public List<TreeViewItemsViewModel> TreeViewItems
         {
@@ -393,7 +379,6 @@ namespace MASReportTool.ViewModels
         public TabViewModel()
         {
             Report = new Report();
-            Header = Report.CurrentOpenedFile;
             SubRulesList = GetSubRuleList();
         }
 
