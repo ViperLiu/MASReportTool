@@ -90,6 +90,7 @@
     </ApplicationDefinition>
     <Compile Include="BindingProxy.cs" />
     <Compile Include="MASReport.cs" />
+    <Compile Include="ValueConverters\CurrentOpenedFileToTabItemTextConverter.cs" />
     <Compile Include="ValueConverters\UriToCachedImageConverter.cs" />
     <Compile Include="ValueConverters\IsSavedColorConverter.cs" />
     <Compile Include="JsonFileController.cs" />
