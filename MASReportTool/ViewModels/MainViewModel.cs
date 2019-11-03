@@ -60,9 +60,9 @@ namespace MASReportTool.ViewModels
                     (object obj) =>
                     {
                         //如果檔案存在就直接存檔
-                        if (File.Exists(TabItems[0].Report.CurrentOpenedFile))
+                        if (File.Exists(CurrentSelectedTab.Report.CurrentOpenedFile))
                         {
-                            SaveFile(TabItems[0].Report.CurrentOpenedFile);
+                            SaveFile(CurrentSelectedTab.Report.CurrentOpenedFile);
                             return;
                         }
 
@@ -108,9 +108,10 @@ namespace MASReportTool.ViewModels
                             if (extension == ".jsonr")
                             {
                                 JsonFileController json = new JsonFileController(file);
-                                TabItems[0].Report = json.LoadFile();
-                                TabItems[0].Report.RegistPropertyChangedEvent();
-                                Console.WriteLine("[INFO] 載入檔案：" + TabItems[0].Report.CurrentOpenedFile);
+                                CurrentSelectedTab.Report = json.LoadFile();
+                                CurrentSelectedTab.Report.RegistPropertyChangedEvent();
+                                CurrentSelectedTab.Header = CurrentSelectedTab.Report.CurrentOpenedFile;
+                                Console.WriteLine("[INFO] 載入檔案：" + CurrentSelectedTab.Report.CurrentOpenedFile);
                             }
                             else
                             {
@@ -250,9 +251,9 @@ namespace MASReportTool.ViewModels
         {
             Console.WriteLine("[INFO] 儲存檔案 : " + file);
             JsonFileController json = new JsonFileController(file);
-            json.SaveFile(TabItems[0].Report);
-            TabItems[0].Header = TabItems[0].Report.CurrentOpenedFile = file;
-            TabItems[0].Report.MarkAsSaved();
+            json.SaveFile(CurrentSelectedTab.Report);
+            CurrentSelectedTab.Header = CurrentSelectedTab.Report.CurrentOpenedFile = file;
+            CurrentSelectedTab.Report.MarkAsSaved();
         }
 
         private void SaveAsNewFile()
