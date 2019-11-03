@@ -140,7 +140,19 @@
             </i:Interaction.Triggers>
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Header}" />
+                    <WrapPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition  MinHeight="10"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition MinWidth="10"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Header}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" UseLayoutRounding="True"/>
+                            <Button Grid.Column="1" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="15" MinHeight="15" Margin="10,0,0,0" BorderThickness="0">×</Button>
+                        </Grid>
+                    </WrapPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
