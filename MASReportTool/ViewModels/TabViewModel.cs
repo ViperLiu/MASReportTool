@@ -25,9 +25,10 @@ namespace MASReportTool.ViewModels
                 if (value != _Report)
                 {
                     _Report = value;
-                    OnPropertyChanged("Report");
                     TreeViewItems = TreeViewItemsViewModel.GetTreeViewItems(_Report);
                     SetCurrentSelectedRule(TreeViewItems[0].Items[0]);
+                    SubRulesList = GetSubRuleList();
+                    OnPropertyChanged("Report");
                 }
             }
         }
