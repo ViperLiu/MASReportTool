@@ -592,6 +592,9 @@
                                     AllowDrop="True"
                                     ItemsSource="{Binding CurrentSelectedSubRule.Pictures}"
                                     Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+                                    <ItemsControl.Resources>
+                                        <local:BindingProxy x:Key="proxy2" Data="{Binding .}"/>
+                                    </ItemsControl.Resources>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Image
@@ -603,26 +606,26 @@
                                                     <ContextMenu>
                                                         <MenuItem
                                                             Name="CM_PicMoveUp"
-                                                            Command="{Binding Path=Data.PictureMoveUp, Source={StaticResource proxy}}"
+                                                            Command="{Binding Path=Data.PictureMoveUp , Source={StaticResource proxy2}}"
                                                             CommandParameter="{Binding .}"
                                                             Header="上移一張"
                                                             Tag="{Binding Index}" />
                                                         <MenuItem
                                                             Name="CM_PicMoveDown"
-                                                            Command="{Binding Path=Data.PictureMoveDown, Source={StaticResource proxy}}"
+                                                            Command="{Binding Path=Data.PictureMoveDown, Source={StaticResource proxy2}}"
                                                             CommandParameter="{Binding .}"
                                                             Header="下移一張" />
                                                         <Separator />
                                                         <MenuItem
                                                             Name="CM_DeletePic"
-                                                            Command="{Binding Path=Data.PictureDeleted, Source={StaticResource proxy}}"
+                                                            Command="{Binding Path=Data.PictureDeleted, Source={StaticResource proxy2}}"
                                                             CommandParameter="{Binding .}"
                                                             Header="刪除圖片" />
                                                     </ContextMenu>
                                                 </Image.ContextMenu>
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="MouseDown">
-                                                        <i:InvokeCommandAction Command="{Binding Path=Data.ThumbnailClicked, Source={StaticResource proxy}}" CommandParameter="{Binding ElementName=Thumbnail, Path=Tag}" />
+                                                        <i:InvokeCommandAction Command="{Binding Path=Data.ThumbnailClicked, Source={StaticResource proxy2}}" CommandParameter="{Binding ElementName=Thumbnail, Path=Tag}" />
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
                                             </Image>
