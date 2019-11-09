@@ -165,7 +165,9 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 BorderThickness="0"
-                                FontWeight="Bold">
+                                FontWeight="Bold"
+                                Command="{Binding Path=Data.CloseTab, Source={StaticResource proxy}}"
+                                CommandParameter="{Binding .}">
                                 ×
                             </Button>
                         </Grid>
