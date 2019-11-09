@@ -447,7 +447,6 @@
                                                         Grid.ColumnSpan="2"
                                                         Margin="2"
                                                         Command="{Binding PictureButtonClick}"
-                                                        CommandParameter="{Binding ElementName=Btn_Pictures, Path=Tag}"
                                                         Style="{StaticResource ButtonHover}">
                                                         <WrapPanel>
                                                             <TextBlock>圖片</TextBlock>
