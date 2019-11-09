@@ -412,15 +412,17 @@ namespace MASReportTool.ViewModels
             var subRulesList = new List<SubRuleViewModel>();
             foreach(var subRule in CurrentSelectedRule.SubRuleList)
             {
-                subRulesList.Add(new SubRuleViewModel(subRule));
+                var subRuleVM = new SubRuleViewModel(subRule);
+                subRuleVM.PictureButtonClicked += PictureButtonClicked;
+                subRulesList.Add(subRuleVM);
             }
             return subRulesList;
         }
 
         private void PictureButtonClicked(object sender, EventArgs e)
         {
-            var btn = sender as Button;
-            var subRule = btn.Tag as SubRuleResult;
+            var subRuleVM = sender as SubRuleViewModel;
+            var subRule = subRuleVM.SubRule as SubRuleResult;
             CurrentSelectedSubRule = subRule;
             CurrentSelectedPic = subRule.Pictures.Count < 1 ? null : subRule.Pictures[0];
             IsPicturePanelShown = true;
