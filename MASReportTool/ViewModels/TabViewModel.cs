@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -403,8 +404,6 @@ namespace MASReportTool.ViewModels
             if (originalSelectedTreeViewItem == null)
                 return;
             originalSelectedTreeViewItem.IsBorderVisible = false;
-            
-            
         }
 
         private List<SubRuleViewModel> GetSubRuleList()
@@ -426,6 +425,23 @@ namespace MASReportTool.ViewModels
             CurrentSelectedSubRule = subRule;
             CurrentSelectedPic = subRule.Pictures.Count < 1 ? null : subRule.Pictures[0];
             IsPicturePanelShown = true;
+        }
+
+        public void PicturePanelDragEnter(object sender, DragEventArgs e)
+        {
+            var file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            var extension = System.IO.Path.GetExtension(file).ToLower();
+            if (extension == ".jpg" || extension == ".png")
+                e.Effects = DragDropEffects.Copy;
+            else
+                e.Effects = DragDropEffects.None;
+        }
+
+        public void PicturePanelDrop(object sender, DragEventArgs e)
+        {
+            var files = ((string[])e.Data.GetData(DataFormats.FileDrop));
+            CurrentSelectedSubRule.AddPictures(files);
+            CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
         }
 
         protected void OnPropertyChanged(string name)

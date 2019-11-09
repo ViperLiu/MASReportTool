@@ -228,23 +228,7 @@ namespace MASReportTool.ViewModels
             return ruleContents;
         }
 
-        //public void PicturePanelDragEnter(object sender, DragEventArgs e)
-        //{
-        //    var file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
-        //    var extension = System.IO.Path.GetExtension(file).ToLower();
-        //    if (extension == ".jpg" || extension == ".png")
-        //        e.Effects = DragDropEffects.Copy;
-        //    else
-        //        e.Effects = DragDropEffects.None;
-
-        //}
-
-        //public void PicturePanelDrop(object sender, DragEventArgs e)
-        //{
-        //    var files = ((string[])e.Data.GetData(DataFormats.FileDrop));
-        //    CurrentSelectedSubRule.AddPictures(files);
-        //    CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
-        //}
+        
 
         private void SaveFile(string file)
         {
