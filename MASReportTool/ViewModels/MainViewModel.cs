@@ -61,6 +61,8 @@ namespace MASReportTool.ViewModels
                     {
                         var tabVM = obj as TabViewModel;
                         Debug.WriteLine(TabItems.IndexOf(tabVM));
+                        if (TabItems.Count == 1)
+                            NewReport.Execute(null);
                         try
                         {
                             TabItems.Remove(tabVM);
