@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -186,29 +186,6 @@ namespace MASReportTool.ViewModels
             }
         }
 
-        public ICommand SelectedTabChanged
-        {
-            get
-            {
-                return new RelayCommand(
-                    (object obj) =>
-                    {
-                        var indexBefore = TabItems.IndexOf(CurrentSelectedTab);
-                        var indexAfter = (int)obj;
-                        TabItems[indexBefore].DisableClassChangedCommand();
-                        Console.WriteLine("ClassChangedDisable, Index : " + indexBefore);
-                        if (!TabItems[indexAfter].IsClassChangedEnable)
-                        {
-                            TabItems[indexAfter].EnableClassChangedCommand();
-                            Console.WriteLine("ClassChangedEnable, Index : " + indexAfter);
-                        }
-                        CurrentSelectedTab = TabItems[indexAfter];
-                        Console.WriteLine("Tabs changed");
-                    },
-                    () => { return true; }
-                    );
-            }
-        }
 
 
         public MainViewModel()
@@ -278,6 +255,28 @@ namespace MASReportTool.ViewModels
             {
                 SaveFile(file);
             }
+        }
+
+        public void TabsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var tabControl = sender as TabControl;
+            var indexBefore = TabItems.IndexOf(CurrentSelectedTab);
+            var indexAfter = tabControl.SelectedIndex;
+            Console.WriteLine("TabsSelectionChanged");
+            Console.WriteLine("indexBefore : " + indexBefore);
+            Console.WriteLine("indexAfter : " + indexAfter);
+            if (indexAfter == -1)
+                return;
+            if (indexBefore != -1)
+            {
+                TabItems[indexBefore].DisableClassChangedCommand();
+                Console.WriteLine("ClassChangedDisable, Index : " + indexBefore);
+            }
+
+            TabItems[indexAfter].EnableClassChangedCommand();
+            Console.WriteLine("ClassChangedEnable, Index : " + indexAfter);
+            CurrentSelectedTab = TabItems[indexAfter];
+            Console.WriteLine(tabControl.SelectedIndex);
         }
 
     }
