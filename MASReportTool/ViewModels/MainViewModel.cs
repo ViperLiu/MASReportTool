@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -51,6 +51,31 @@ namespace MASReportTool.ViewModels
 
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand CloseTab
+        {
+            get
+            {
+                return new RelayCommand(
+                    (object obj) =>
+                    {
+                        var tabVM = obj as TabViewModel;
+                        Debug.WriteLine(TabItems.IndexOf(tabVM));
+                        try
+                        {
+                            TabItems.Remove(tabVM);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                            Debug.WriteLine(e.StackTrace);
+                        }
+                        
+                    },
+                    () => { return true; }
+                    );
+            }
+        }
 
         public ICommand SaveJsonFile
         {
