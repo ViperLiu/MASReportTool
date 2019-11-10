@@ -136,7 +136,7 @@
             ItemsSource="{Binding TabItems}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectedTabChanged}" CommandParameter="{Binding ElementName=Tabs, Path=SelectedIndex}" />
+                    <ei:CallMethodAction MethodName="TabsSelectionChanged" TargetObject="{Binding}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <TabControl.ItemTemplate>
@@ -165,9 +165,9 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 BorderThickness="0"
-                                FontWeight="Bold"
                                 Command="{Binding Path=Data.CloseTab, Source={StaticResource proxy}}"
-                                CommandParameter="{Binding .}">
+                                CommandParameter="{Binding .}"
+                                FontWeight="Bold">
                                 ×
                             </Button>
                         </Grid>
@@ -595,7 +595,7 @@
                                     ItemsSource="{Binding CurrentSelectedSubRule.Pictures}"
                                     Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
                                     <ItemsControl.Resources>
-                                        <local:BindingProxy x:Key="proxy2" Data="{Binding .}"/>
+                                        <local:BindingProxy x:Key="proxy2" Data="{Binding .}" />
                                     </ItemsControl.Resources>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
@@ -608,7 +608,7 @@
                                                     <ContextMenu>
                                                         <MenuItem
                                                             Name="CM_PicMoveUp"
-                                                            Command="{Binding Path=Data.PictureMoveUp , Source={StaticResource proxy2}}"
+                                                            Command="{Binding Path=Data.PictureMoveUp, Source={StaticResource proxy2}}"
                                                             CommandParameter="{Binding .}"
                                                             Header="上移一張"
                                                             Tag="{Binding Index}" />
