@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -144,6 +144,7 @@ namespace MASReportTool.ViewModels
 
                                 targetTab.Report = json.LoadFile();
                                 targetTab.Report.RegistPropertyChangedEvent();
+                                targetTab.Report.MarkAsSaved();
                                 Console.WriteLine("[INFO] 載入檔案：" + CurrentSelectedTab.Report.CurrentOpenedFile);
                             }
                             else
