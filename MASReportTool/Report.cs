@@ -254,7 +254,7 @@ namespace MASReportTool
             }
         }
 
-        private bool _isSaved = false;
+        private bool _isSaved = true;
         [JsonIgnore]
         public bool IsSaved
         {
