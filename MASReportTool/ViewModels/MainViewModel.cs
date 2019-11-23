@@ -232,7 +232,14 @@ namespace MASReportTool.ViewModels
             return ruleContents;
         }
 
-        
+        private bool ShouldOpenNewTab()
+        {
+            if (File.Exists(CurrentSelectedTab.Report.CurrentOpenedFile))
+                return true;
+            if (CurrentSelectedTab.Report.IsSaved)
+                return true;
+            return false;
+        }
 
         private void SaveFile(string file)
         {
