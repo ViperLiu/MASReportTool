@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -134,9 +134,16 @@ namespace MASReportTool.ViewModels
                         {
                             if (extension == ".jsonr")
                             {
+                                var targetTab = CurrentSelectedTab;
                                 JsonFileController json = new JsonFileController(file);
-                                CurrentSelectedTab.Report = json.LoadFile();
-                                CurrentSelectedTab.Report.RegistPropertyChangedEvent();
+                                if (ShouldLoadFileInNewTab())
+                                {
+                                    TabItems.Add(new TabViewModel());
+                                    targetTab = TabItems.Last();
+                                }
+
+                                targetTab.Report = json.LoadFile();
+                                targetTab.Report.RegistPropertyChangedEvent();
                                 Console.WriteLine("[INFO] 載入檔案：" + CurrentSelectedTab.Report.CurrentOpenedFile);
                             }
                             else
