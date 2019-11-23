@@ -5,15 +5,20 @@ using System.Windows.Data;
 
 namespace MASReportTool.ValueConverters
 {
-    class CurrentOpenedFileToTabItemTextConverter : IValueConverter
+    class CurrentOpenedFileToTabItemTextConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var CurrentOpenedFile = value as string;
-            return Path.GetFileNameWithoutExtension(CurrentOpenedFile);
+            var isSaved = (bool)values[0];
+            var currentOpenedFile = values[1] as string;
+            var titleText = Path.GetFileNameWithoutExtension(currentOpenedFile);
+            titleText = titleText.Replace("*", "");
+            if (!isSaved)
+                titleText = "*" + titleText;
+            return titleText;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
