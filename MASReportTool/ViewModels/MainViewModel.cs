@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -232,7 +232,7 @@ namespace MASReportTool.ViewModels
             return ruleContents;
         }
 
-        private bool ShouldOpenNewTab()
+        private bool ShouldLoadFileInNewTab()
         {
             if (File.Exists(CurrentSelectedTab.Report.CurrentOpenedFile))
                 return true;
