@@ -382,6 +382,7 @@ namespace MASReportTool.ViewModels
         {
             Report = new Report();
             SubRulesList = GetSubRuleList();
+            Report.MarkAsSaved();
         }
 
         public void DisableClassChangedCommand()
