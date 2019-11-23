@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -243,7 +243,7 @@ namespace MASReportTool.ViewModels
         {
             if (File.Exists(CurrentSelectedTab.Report.CurrentOpenedFile))
                 return true;
-            if (CurrentSelectedTab.Report.IsSaved)
+            if (!CurrentSelectedTab.Report.IsSaved)
                 return true;
             return false;
         }
