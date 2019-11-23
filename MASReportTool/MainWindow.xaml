@@ -155,8 +155,14 @@
                                 Margin="0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Text="{Binding Report, Converter={StaticResource CurrentOpenedFileToTabItemTextConverter}}"
-                                UseLayoutRounding="True" />
+                                UseLayoutRounding="True">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource CurrentOpenedFileToTabItemTextConverter}">
+                                        <Binding Path="Report.IsSaved" />
+                                        <Binding Path="Report.CurrentOpenedFile" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                             <Button
                                 Grid.Column="1"
                                 MinWidth="15"
