@@ -13,11 +13,11 @@ namespace MASReportTool
         private static readonly SaveFileDialog SaveFileDialog = new SaveFileDialog();
         private static readonly OpenFileDialog OpenFileDialog = new OpenFileDialog();
 
-        public static void ShowSaveDocxFileDialog(string initalFileName, out bool? dialogResult, out string resultFileName)
+        public static void ShowSaveDocxFileDialog(string initialFileName, out bool? dialogResult, out string resultFileName)
         {
             SaveFileDialog.Filter = "Word文件|*.docx";
             SaveFileDialog.DefaultExt = ".docx";
-            SaveFileDialog.FileName = initalFileName;
+            SaveFileDialog.FileName = initialFileName;
             dialogResult = SaveFileDialog.ShowDialog();
             resultFileName = SaveFileDialog.FileName;
         }
