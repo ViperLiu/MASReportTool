@@ -13,9 +13,9 @@ namespace MASReportTool
     {
         
 
-        private readonly static string TemplateA = "***REMOVED***";
-        private readonly static string TemplateB = "***REMOVED***";
-        private readonly static string TemplateC = "***REMOVED***";
+        private readonly static string L1Template = "***REMOVED***";
+        private readonly static string L2Template = "***REMOVED***";
+        private readonly static string L3TemplateC = "***REMOVED***";
         private readonly static string Font = "標楷體";
         private readonly static string ResultTableTitle = "檢測基準";
         private readonly static string OverviewTableTitle = "技術要求";
@@ -30,11 +30,11 @@ namespace MASReportTool
         public MASReport(Report report)
         {
             if (report.Class == 1)
-                _templateFile += TemplateA;
+                _templateFile += L1Template;
             else if (report.Class == 2)
-                _templateFile += TemplateB;
+                _templateFile += L2Template;
             else if (report.Class == 3)
-                _templateFile += TemplateC;
+                _templateFile += L3TemplateC;
             else
                 throw new Exception("無法讀取檢測分類");
 
