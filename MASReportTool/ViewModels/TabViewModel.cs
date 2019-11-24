@@ -274,19 +274,15 @@ namespace MASReportTool.ViewModels
                 return new RelayCommand(
                     (object obj) =>
                     {
+                        DialogProvider.ShowOpenPicsFileDialog(
+                            out var dialogResult,
+                            out var resultFiles
+                            );
 
-                        OpenFileDialog openFileDialog = new OpenFileDialog
-                        {
-                            Filter = "圖片檔|*.jpg; *.png; *.gif",
-                            Multiselect = true
-                        };
-                        var result = openFileDialog.ShowDialog();
-                        var files = openFileDialog.FileNames;
-
-                        if (result == false)
+                        if (dialogResult == false)
                             return;
 
-                        CurrentSelectedSubRule.AddPictures(files);
+                        CurrentSelectedSubRule.AddPictures(resultFiles);
                         CurrentSelectedPic = CurrentSelectedSubRule.Pictures.Last();
                     },
                     () => { return true; }
