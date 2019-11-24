@@ -13,13 +13,13 @@ namespace MASReportTool
     {
         
 
-        private readonly string _templateA = "***REMOVED***";
-        private readonly string _templateB = "***REMOVED***";
-        private readonly string _templateC = "***REMOVED***";
-        private readonly string _templateFile = "assets\\";
-        private readonly string _font = "標楷體";
+        private readonly static string _templateA = "***REMOVED***";
+        private readonly static string _templateB = "***REMOVED***";
+        private readonly static string _templateC = "***REMOVED***";
+        private readonly static string _font = "標楷體";
         private readonly static string ResultTableTitle = "檢測基準";
         private readonly static string OverviewTableTitle = "技術要求";
+        private readonly string _templateFile = "assets\\";
         private readonly Report _report;
         private readonly List<Table> _resultTables;
         private readonly Table _overviewTable;
