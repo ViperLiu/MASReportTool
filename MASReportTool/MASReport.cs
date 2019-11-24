@@ -18,6 +18,8 @@ namespace MASReportTool
         private readonly string _templateC = "***REMOVED***";
         private readonly string _templateFile = "assets\\";
         private readonly string _font = "標楷體";
+        private readonly static string ResultTableTitle = "檢測基準";
+        private readonly static string OverviewTableTitle = "技術要求";
         private readonly Report _report;
         private readonly List<Table> _resultTables;
         private readonly Table _overviewTable;
@@ -123,7 +125,7 @@ namespace MASReportTool
             List<Table> targetTables = new List<Table>();
             foreach (var table in tables)
             {
-                if (table.Rows[0].Cells[0].Paragraphs.First().Text == "檢測基準")
+                if (table.Rows[0].Cells[0].Paragraphs.First().Text == ResultTableTitle)
                 {
                     targetTables.Add(table);
                 }
@@ -137,7 +139,7 @@ namespace MASReportTool
             var tables = _templateDocx.Tables;
             foreach(var table in tables)
             {
-                if(table.Rows[0].Cells[1].Paragraphs.First().Text == "技術要求")
+                if(table.Rows[0].Cells[1].Paragraphs.First().Text == OverviewTableTitle)
                 {
                     return table;
                 }
