@@ -198,8 +198,9 @@ namespace MASReportTool
                     row2.MergeCells(0, 1);
 
                     //按照比例縮小圖片，如圖片不足600寬，則保留原大小
-                    p.Width = pictures[i].Image.Width < 600 ? pictures[i].Image.Width : 600;
-                    p.Height = (int)(p.Width / pictures[i].Ratio);
+                    ResizePicture(pictures[i], 600, out var width, out var height);
+                    p.Width = width;
+                    p.Height = height;
 
                     //新增table放圖片
                     row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(Font);
@@ -224,8 +225,9 @@ namespace MASReportTool
                         row2.MergeCells(0, 1);
 
                         //按照比例縮小圖片，如圖片不足200寬，則保留原大小
-                        p.Width = pictures[i].Image.Width < 200 ? pictures[i].Image.Width : 200;
-                        p.Height = (int)(p.Width / pictures[i].Ratio);
+                        ResizePicture(pictures[i], 200, out var width, out var height);
+                        p.Width = width;
+                        p.Height = height;
 
                         //新增table放圖片
                         row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(Font);
@@ -243,8 +245,9 @@ namespace MASReportTool
                         row2.MergeCells(0, 1);
 
                         //按照比例縮小圖片，如圖片不足200寬，則保留原大小
-                        p.Width = pictures[i].Image.Width < 200 ? pictures[i].Image.Width : 200;
-                        p.Height = (int)(p.Width / pictures[i].Ratio);
+                        ResizePicture(pictures[i], 200, out var width, out var height);
+                        p.Width = width;
+                        p.Height = height;
 
                         //新增table放圖片
                         row2.Cells[0].Paragraphs.First().InsertPicture(p);
@@ -264,11 +267,13 @@ namespace MASReportTool
 
 
                         //按照比例縮小圖片，如圖片不足200寬，則保留原大小
-                        p.Width = pictures[i].Image.Width < 200 ? pictures[i].Image.Width : 200;
-                        p.Height = (int)(p.Width / pictures[i].Ratio);
+                        ResizePicture(pictures[i], 200, out var width, out var height);
+                        p.Width = width;
+                        p.Height = height;
 
-                        p2.Width = pictures[i + 1].Image.Width < 200 ? pictures[i + 1].Image.Width : 200;
-                        p2.Height = (int)(p.Width / pictures[i + 1].Ratio);
+                        ResizePicture(pictures[i + 1], 200, out var width2, out var height2);
+                        p2.Width = width2;
+                        p2.Height = height2;
 
                         //新增table放圖片
                         row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(Font);
@@ -310,6 +315,12 @@ namespace MASReportTool
             if (pic.Ratio > 0.6)
                 return false;
             return true;
+        }
+
+        private void ResizePicture(Picture pic, int targetWidth, out int width, out int height)
+        {
+            width = pic.Image.Width < targetWidth ? pic.Image.Width : targetWidth;
+            height = (int)(width / pic.Ratio);
         }
     }
 }
