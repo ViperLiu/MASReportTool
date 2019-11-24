@@ -165,22 +165,22 @@ namespace MASReportTool.ViewModels
                 return new RelayCommand(
                     (object obj) =>
                     {
-                        SaveFileDialog outputReportDialog = new SaveFileDialog
-                        {
-                            Filter = "Word文件|*.docx",
-                            DefaultExt = ".docx",
-                            FileName = Path.GetFileNameWithoutExtension(CurrentSelectedTab.Report.CurrentOpenedFile)
-                        };
-                        var result = outputReportDialog.ShowDialog();
-                        var file = outputReportDialog.FileName;
+                        var initialFileName = Path.GetFileNameWithoutExtension(
+                            CurrentSelectedTab.Report.CurrentOpenedFile
+                            );
+                        DialogProvider.ShowSaveDocxFileDialog(
+                            initialFileName, 
+                            out var dialogResult, 
+                            out var resultFilename
+                            );
 
-                        if (result == false)
+                        if (dialogResult == false)
                             return;
 
                         MASReport reportFile = new MASReport(CurrentSelectedTab.Report);
                         try
                         {
-                            reportFile.BuildReport(file);
+                            reportFile.BuildReport(resultFilename);
                         }
                         catch (Exception exception)
                         {
@@ -188,7 +188,7 @@ namespace MASReportTool.ViewModels
                             Console.WriteLine(exception.StackTrace + "\r\n");
                             return;
                         }
-                        Process.Start(file);
+                        Process.Start(resultFilename);
                     },
                     () => { return true; }
                     );
