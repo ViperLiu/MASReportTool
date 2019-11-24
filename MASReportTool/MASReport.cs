@@ -189,7 +189,7 @@ namespace MASReportTool
                 Xceed.Words.NET.Picture p = img.CreatePicture();
 
                 //非手機圖
-                if (pictures[i].Ratio > 0.6)
+                if (!IsCellPhoneScreenshot(pictures[i]))
                 {
                     var row = picTable.InsertRow();
                     row.MergeCells(0, 1);
@@ -234,7 +234,7 @@ namespace MASReportTool
                         break;
                     }
                     //下一張不是手機圖
-                    if (pictures[i + 1].Ratio > 0.6)
+                    if (!IsCellPhoneScreenshot(pictures[i + 1]))
                     {
                         var row = picTable.InsertRow();
                         row.MergeCells(0, 1);
@@ -303,6 +303,13 @@ namespace MASReportTool
                 var color = currentRule.SubRuleList[j].Result.GetDisplayColor();
                 currentPara.Append(result).Color(color).Font(Font);
             }
+        }
+
+        private bool IsCellPhoneScreenshot(Picture pic)
+        {
+            if (pic.Ratio > 0.6)
+                return false;
+            return true;
         }
     }
 }
