@@ -1,10 +1,11 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MASReportTool
 {
@@ -28,6 +29,20 @@ namespace MASReportTool
             SaveFileDialog.DefaultExt = ".jsonr";
             dialogResult = SaveFileDialog.ShowDialog();
             resultFileName = SaveFileDialog.FileName;
+        }
+
+        public static void ShowOpenJsonrFileDialog(out bool? dialogResult, out string resultFileName)
+        {
+            OpenFileDialog.Filter = "MAS報告|*.jsonr";
+            OpenFileDialog.DefaultExt = ".jsonr";
+            dialogResult = OpenFileDialog.ShowDialog();
+            resultFileName = OpenFileDialog.FileName;
+            var extension = Path.GetExtension(resultFileName).ToLower();
+            if (extension != ".jsonr")
+            {
+                dialogResult = false;
+                MessageBox.Show("不支援此檔案格式");
+            }
         }
     }
 }
