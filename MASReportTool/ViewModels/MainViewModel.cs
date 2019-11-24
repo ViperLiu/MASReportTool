@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -122,36 +122,27 @@ namespace MASReportTool.ViewModels
                 return new RelayCommand(
                     (object obj) =>
                     {
+                        DialogProvider.ShowOpenJsonrFileDialog(
+                            out var dialogResult, 
+                            out var resultFileName
+                            );
 
-                        OpenFileDialog openFileDialog = new OpenFileDialog
-                        {
-                            Filter = "jsonr檔|*.jsonr"
-                        };
-                        var result = openFileDialog.ShowDialog();
-                        string file = openFileDialog.FileName;
-                        string extension = Path.GetExtension(file).ToLower();
-                        if (result == true)
-                        {
-                            if (extension == ".jsonr")
-                            {
-                                var targetTab = CurrentSelectedTab;
-                                JsonFileController json = new JsonFileController(file);
-                                if (ShouldLoadFileInNewTab())
-                                {
-                                    TabItems.Add(new TabViewModel());
-                                    targetTab = TabItems.Last();
-                                }
+                        if (dialogResult == false)
+                            return;
 
-                                targetTab.Report = json.LoadFile();
-                                targetTab.Report.RegistPropertyChangedEvent();
-                                targetTab.Report.MarkAsSaved();
-                                Console.WriteLine("[INFO] 載入檔案：" + CurrentSelectedTab.Report.CurrentOpenedFile);
-                            }
-                            else
-                            {
-                                MessageBox.Show("不支援此檔案格式");
-                            }
+                        var targetTab = CurrentSelectedTab;
+                        JsonFileController json = new JsonFileController(resultFileName);
+
+                        if (ShouldLoadFileInNewTab())
+                        {
+                            TabItems.Add(new TabViewModel());
+                            targetTab = TabItems.Last();
                         }
+
+                        targetTab.Report = json.LoadFile();
+                        targetTab.Report.RegistPropertyChangedEvent();
+                        targetTab.Report.MarkAsSaved();
+                        Console.WriteLine("[INFO] 載入檔案：" + CurrentSelectedTab.Report.CurrentOpenedFile);
                     },
                     () => { return true; }
                     );
