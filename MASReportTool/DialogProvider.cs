@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,11 +22,10 @@ namespace MASReportTool
             resultFileName = SaveFileDialog.FileName;
         }
 
-        public static void ShowSaveJsonrFileDialog(string initalFileName, out bool? dialogResult, out string resultFileName)
+        public static void ShowSaveJsonrFileDialog(out bool? dialogResult, out string resultFileName)
         {
             SaveFileDialog.Filter = "MAS報告|*.jsonr";
             SaveFileDialog.DefaultExt = ".jsonr";
-            SaveFileDialog.FileName = initalFileName;
             dialogResult = SaveFileDialog.ShowDialog();
             resultFileName = SaveFileDialog.FileName;
         }
