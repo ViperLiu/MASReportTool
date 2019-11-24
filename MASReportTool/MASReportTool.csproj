@@ -89,6 +89,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BindingProxy.cs" />
+    <Compile Include="DialogProvider.cs" />
     <Compile Include="MASReport.cs" />
     <Compile Include="ValueConverters\CurrentOpenedFileToTabItemTextConverter.cs" />
     <Compile Include="ValueConverters\UriToCachedImageConverter.cs" />
