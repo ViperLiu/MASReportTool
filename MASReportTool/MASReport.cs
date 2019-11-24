@@ -13,10 +13,10 @@ namespace MASReportTool
     {
         
 
-        private readonly static string _templateA = "***REMOVED***";
-        private readonly static string _templateB = "***REMOVED***";
-        private readonly static string _templateC = "***REMOVED***";
-        private readonly static string _font = "標楷體";
+        private readonly static string TemplateA = "***REMOVED***";
+        private readonly static string TemplateB = "***REMOVED***";
+        private readonly static string TemplateC = "***REMOVED***";
+        private readonly static string Font = "標楷體";
         private readonly static string ResultTableTitle = "檢測基準";
         private readonly static string OverviewTableTitle = "技術要求";
         private readonly string _templateFile = "assets\\";
@@ -30,11 +30,11 @@ namespace MASReportTool
         public MASReport(Report report)
         {
             if (report.Class == 1)
-                _templateFile += _templateA;
+                _templateFile += TemplateA;
             else if (report.Class == 2)
-                _templateFile += _templateB;
+                _templateFile += TemplateB;
             else if (report.Class == 3)
-                _templateFile += _templateC;
+                _templateFile += TemplateC;
             else
                 throw new Exception("無法讀取檢測分類");
 
@@ -89,7 +89,7 @@ namespace MASReportTool
                 var paragraph = _overviewTable.Rows[i].Cells[2].Paragraphs[0];
                 var resultStr = _ruleList[i - 1].FinalResult.GetDisplayString();
                 var color = _ruleList[i - 1].FinalResult.GetDisplayColor();
-                paragraph.Append(resultStr).Font(_font).Color(color);
+                paragraph.Append(resultStr).Font(Font).Color(color);
             }
         }
 
@@ -160,7 +160,7 @@ namespace MASReportTool
             foreach (var subRule in currentRule.SubRuleList)
             {
                 //輸出Text
-                resultTextPara.Append(subRule.Text + "\r\n").Font(_font);
+                resultTextPara.Append(subRule.Text + "\r\n").Font(Font);
                 resultTextPara.Alignment = Alignment.left;
 
                 //輸出圖片
@@ -202,7 +202,7 @@ namespace MASReportTool
                     p.Height = (int)(p.Width / pictures[i].Ratio);
 
                     //新增table放圖片
-                    row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(_font);
+                    row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(Font);
                     row2.Cells[0].Paragraphs.First().InsertPicture(p);
 
                     if (i == pictures.Count - 1)
@@ -228,7 +228,7 @@ namespace MASReportTool
                         p.Height = (int)(p.Width / pictures[i].Ratio);
 
                         //新增table放圖片
-                        row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(_font);
+                        row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(Font);
                         row2.Cells[0].Paragraphs.First().InsertPicture(p);
 
                         break;
@@ -248,7 +248,7 @@ namespace MASReportTool
 
                         //新增table放圖片
                         row2.Cells[0].Paragraphs.First().InsertPicture(p);
-                        row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(_font);
+                        row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(Font);
 
                         i++;
                     }
@@ -271,10 +271,10 @@ namespace MASReportTool
                         p2.Height = (int)(p.Width / pictures[i + 1].Ratio);
 
                         //新增table放圖片
-                        row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(_font);
+                        row.Cells[0].Paragraphs.First().Append(pictures[i].Caption).Font(Font);
                         row2.Cells[0].Paragraphs.First().InsertPicture(p);
 
-                        row.Cells[1].Paragraphs.First().Append(pictures[i + 1].Caption).Font(_font);
+                        row.Cells[1].Paragraphs.First().Append(pictures[i + 1].Caption).Font(Font);
                         row2.Cells[1].Paragraphs.First().InsertPicture(p2);
 
                         i += 2;
@@ -301,7 +301,7 @@ namespace MASReportTool
 
                 var result = currentRule.SubRuleList[j].Result.GetDisplayString();
                 var color = currentRule.SubRuleList[j].Result.GetDisplayColor();
-                currentPara.Append(result).Color(color).Font(_font);
+                currentPara.Append(result).Color(color).Font(Font);
             }
         }
     }
