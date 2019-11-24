@@ -44,5 +44,13 @@ namespace MASReportTool
                 MessageBox.Show("不支援此檔案格式");
             }
         }
+
+        public static void ShowOpenPicsFileDialog(out bool? dialogResult, out string[] resultFiles)
+        {
+            OpenFileDialog.Filter = "圖片檔|*.jpg; *.png; *.gif";
+            OpenFileDialog.Multiselect = true;
+            dialogResult = OpenFileDialog.ShowDialog();
+            resultFiles = OpenFileDialog.FileNames;
+        }
     }
 }
