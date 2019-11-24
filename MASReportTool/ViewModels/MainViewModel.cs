@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -259,17 +259,13 @@ namespace MASReportTool.ViewModels
 
         private void SaveAsNewFile()
         {
-            SaveFileDialog saveJsonrDialog = new SaveFileDialog
+            DialogProvider.ShowSaveJsonrFileDialog(
+                out var dialogResult,
+                out var resultFilename
+                );
+            if (dialogResult == true)
             {
-                Filter = "MAS報告|*.jsonr",
-                DefaultExt = ".jsonr",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
-            };
-            var result = saveJsonrDialog.ShowDialog();
-            var file = saveJsonrDialog.FileName;
-            if (result == true)
-            {
-                SaveFile(file);
+                SaveFile(resultFilename);
             }
         }
 
