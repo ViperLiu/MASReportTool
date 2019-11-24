@@ -281,6 +281,11 @@ namespace MASReportTool
             }
             picTable.RemoveRow(0);
             picTable.InsertParagraphAfterSelf("\r\n");
+
+            foreach (var p in pictures)
+            {
+                p.ReleasePictureResource();
+            }
         }
 
         private void WriteTestResult(Table resultTable, RuleResults currentRule)
