@@ -473,35 +473,39 @@
                         <!--  基準區域結尾  -->
 
                         <!--  右側檢測文字編輯區  -->
-                        <GroupBox
-                            Name="ResultPanel"
+                        <ScrollViewer
                             Grid.RowSpan="4"
                             Grid.Column="3"
                             Margin="3"
-                            Header="檢測結果"
-                            Style="{StaticResource DarkTheme}">
-                            <StackPanel>
-                                <Border BorderBrush="White" BorderThickness="1">
-                                    <ItemsControl Name="SubRuleResults" ItemsSource="{Binding CurrentSelectedRule.SubRuleList}">
-                                        <ItemsControl.Resources>
-                                            <DataTemplate DataType="{x:Type local:SubRuleResult}">
-                                                <TextBox
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Grid.ColumnSpan="4"
-                                                    Height="Auto"
-                                                    Margin="10"
-                                                    AcceptsReturn="True"
-                                                    BorderThickness="0"
-                                                    Style="{StaticResource DarkTheme}"
-                                                    Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </ItemsControl.Resources>
-                                    </ItemsControl>
-                                </Border>
-                            </StackPanel>
-                        </GroupBox>
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto">
+                            <GroupBox
+                                Name="ResultPanel"
+                                Header="檢測結果"
+                                Style="{StaticResource DarkTheme}">
+                                <StackPanel>
+                                    <Border BorderBrush="White" BorderThickness="1">
+                                        <ItemsControl Name="SubRuleResults" ItemsSource="{Binding CurrentSelectedRule.SubRuleList}">
+                                            <ItemsControl.Resources>
+                                                <DataTemplate DataType="{x:Type local:SubRuleResult}">
+                                                    <TextBox
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Grid.ColumnSpan="4"
+                                                        Height="Auto"
+                                                        Margin="10"
+                                                        AcceptsReturn="True"
+                                                        BorderThickness="0"
+                                                        Style="{StaticResource DarkTheme}"
+                                                        Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </ItemsControl.Resources>
+                                        </ItemsControl>
+                                    </Border>
+                                </StackPanel>
+                            </GroupBox>
+                        </ScrollViewer>
                         <!--  右側檢測文字編輯區結尾  -->
 
                         <!--  圖片  -->
