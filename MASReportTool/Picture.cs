@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Windows.Input;
 
 namespace MASReportTool
 {
@@ -37,7 +39,6 @@ namespace MASReportTool
         }
 
         private int _Index;
-        [JsonIgnore]
         public int Index
         {
             get { return _Index; }
@@ -52,19 +53,33 @@ namespace MASReportTool
         }
         [JsonIgnore]
         public Image Image { get; private set; }
-        [JsonIgnore]
+
         public double Ratio { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        [JsonIgnore]
+        public ICommand Clicked
+        {
+            get { return new RelayCommand(ClickedExecute, CanClickedExecute); }
+        }
 
         public Picture(int index, string path, string caption = "")
         {
             this.Index = index;
             this.FullPath = path;
-            //this.FullPath = MASData.ProjectInfo.GetFullPath(ProjectPath.PicturesFolder) + "\\" + path;
             this.Caption = caption;
             this.Ratio = -1;
-            this.PropertyChanged += MASData.Changed;
+        }
+
+        private bool CanClickedExecute()
+        {
+            return true;
+        }
+
+        private void ClickedExecute(object parameter)
+        {
+            Console.WriteLine(parameter);
         }
 
         public void AddCaption(string text)

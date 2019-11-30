@@ -1,42 +1,60 @@
-﻿<Window x:Class="MASReportTool.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MASReportTool"
-        mc:Ignorable="d"
-        Title="MASReportTool" 
-        Height="674" 
-        Width="937" 
-        MinHeight="674" 
-        MinWidth="937">
+<Window
+    x:Class="MASReportTool.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:MASReportTool.ValueConverters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:MASReportTool"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodel="clr-namespace:MASReportTool.ViewModels"
+    Title="MASReportTool"
+    Width="937"
+    Height="674"
+    MinWidth="937"
+    MinHeight="674"
+    mc:Ignorable="d">
     <Window.Resources>
+        <local:BindingProxy x:Key="proxy" Data="{Binding .}" />
         <Style x:Key="DarkTheme" TargetType="{x:Type Control}">
-            <Setter Property="Foreground" Value="Ivory"/>
-            <Setter Property="Background" Value="#FF333333"/>
+            <Setter Property="Foreground" Value="Ivory" />
+            <Setter Property="Background" Value="#FF333333" />
         </Style>
-        <Style x:Key="ButtonHover" 
-               TargetType="{x:Type Button}"
-               BasedOn="{StaticResource DarkTheme}">
-            <Setter Property="Background" Value="#FF333333"/>
-            <Setter Property="BorderBrush" Value="Ivory"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Margin" Value="3"/>
+        <Style
+            x:Key="ButtonHover"
+            BasedOn="{StaticResource DarkTheme}"
+            TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#FF333333" />
+            <Setter Property="BorderBrush" Value="Ivory" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Margin" Value="3" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF555555"/>
+                    <Setter Property="Background" Value="#FF555555" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <local:ResultStringConverter x:Key="ResultStringConverter" />
-        <local:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
+        <converter:ResultStringIconConverter x:Key="ResultStringIconConverter" />
+        <converter:ResultClassRadioBtnConverter x:Key="ResultClassRadioBtnConverter" />
+        <converter:IsSavedColorConverter x:Key="IsSavedColorConverter" />
+        <converter:ResultStringBoolConverter x:Key="ResultStringBoolConverter" />
+        <converter:ResultStringConverter x:Key="ResultStringConverter" />
+        <converter:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
+        <converter:UriToCachedImageConverter x:Key="UriToCachedImageConverter" />
+        <converter:VisibilityNumberValueConverter x:Key="VisibilityNumberValueConverter" />
+        <converter:CurrentOpenedFileToTabItemTextConverter x:Key="CurrentOpenedFileToTabItemTextConverter" />
     </Window.Resources>
+    <Window.DataContext>
+        <viewmodel:MainViewModel />
+    </Window.DataContext>
 
     <Grid Background="#FF333333">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="1*" MaxWidth="50" />
+            <ColumnDefinition Width="3*" MaxWidth="200" />
+            <ColumnDefinition Width="6*" MaxWidth="450" />
+            <ColumnDefinition Width="7*" MaxWidth="800" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -44,241 +62,24 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TreeView Name="trvMenu"
-                  Grid.RowSpan="4"
-                  SelectedItemChanged="TreeView_SelectedItemChanged"
-                  Style="{StaticResource DarkTheme}">
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
-                    <Setter Property="IsExpanded" Value="True"/>
-                    <Setter Property="Foreground" Value="Ivory"/>
-                </Style>
-            </TreeView.ItemContainerStyle>
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type local:TreeViewItems}" 
-                                          ItemsSource="{Binding Items}">
-                    <TextBlock Text="{Binding Title}" />
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
-        <GroupBox Header="功能" 
-                  Grid.Column="1" 
-                  Grid.RowSpan="1" 
-                  Margin="5"
-                  Style="{StaticResource DarkTheme}">
-            <GroupBox.Resources>
-                <Style TargetType="GroupBox">
-                    <Setter Property="DockPanel.Dock" Value="Top"/>
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="Foreground" Value="Ivory"/>
-                    <Setter Property="Height" Value="Auto"/>
-                    <Setter Property="MinWidth" Value="250"/>
-                </Style>
-            </GroupBox.Resources>
-            <Grid Name="Condition">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="4*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBox TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Grid.Row="0"
-                         Grid.ColumnSpan="4"
-                         VerticalScrollBarVisibility="Auto"
-                         Style="{StaticResource DarkTheme}"
-                         Text="{Binding Content.PassCondition, Mode=OneWay}"/>
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Text="{Binding FinalResult, Converter={StaticResource ResultStringConverter}}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-                <Button Grid.Row="1"
-                        Grid.Column="1"
-                        Content="符合"
-                        Style="{StaticResource ButtonHover}"
-                        BorderBrush="LightGreen"
-                        Foreground="LightGreen"
-                        Name="Btn_Accept"
-                        Click="Btn_Accept_Click"/>
-                <Button Grid.Row="1"
-                        Grid.Column="2"
-                        Content="不符合"
-                        Style="{StaticResource ButtonHover}"
-                        BorderBrush="#FFFF8888"
-                        Foreground="#FFFF8888"
-                        Name="Btn_Fail"
-                        Click="Btn_Fail_Click"/>
-                <Button Grid.Row="1"
-                        Grid.Column="3"
-                        Content="不適用"
-                        Style="{StaticResource ButtonHover}"
-                        BorderBrush="LightGray"
-                        Foreground="LightGray"
-                        Name="Btn_NotFit"
-                        Click="Btn_NotFit_Click"/>
 
-            </Grid>
-        </GroupBox>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                      HorizontalScrollBarVisibility="Disabled"
-                      Grid.Row="1" 
-                      Grid.Column="1" 
-                      Grid.RowSpan="3"
-                      Style="{StaticResource DarkTheme}">
-            <Grid Margin="5">
-                <Grid.Resources>
-                    <Style TargetType="GroupBox">
-                        <Setter Property="DockPanel.Dock" Value="Top"/>
-                        <Setter Property="Margin" Value="3"/>
-                        <Setter Property="Foreground" Value="Ivory"/>
-                        <Setter Property="Height" Value="Auto"/>
-                        <Setter Property="MinHeight" Value="130"/>
-                        <Setter Property="MinWidth" Value="250"/>
-                    </Style>
-                </Grid.Resources>
-
-                <ItemsControl Name="SubRules"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         Style="{StaticResource DarkTheme}">
-                    <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type local:SubRuleResult}">
-                            <GroupBox Width="Auto" 
-                                      Style="{StaticResource DarkTheme}">
-                                <GroupBox.Header>
-                                    <WrapPanel>
-                                        <TextBlock>基準(</TextBlock>
-                                        <TextBlock Text="{Binding Content.SubRuleNumber, Mode=OneWay}"></TextBlock>
-                                        <TextBlock>)</TextBlock>
-                                    </WrapPanel>
-                                </GroupBox.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="5*" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
-                                    <TextBox Text="{Binding Content.Description, Mode=OneWay}"
-                                             TextWrapping="Wrap"
-                                             AcceptsReturn="True"
-                                             IsReadOnly="True"
-                                             Height="Auto"
-                                             Margin="3"
-                                             Grid.Column="0"
-                                             Grid.ColumnSpan="4"
-                                             Grid.Row="0"
-                                             Style="{StaticResource DarkTheme}"
->
-                                    </TextBox>
-                                    <RadioButton Grid.Column="0"
-                                                 Grid.Row="1"
-                                                 Margin="3"
-                                                 Content="符合"
-                                                 Style="{StaticResource DarkTheme}"
-                                                 Background="White"
-                                                 Tag="{Binding Content.SubRuleNumber}"
-                                                 Name="Rb_SubRule_Accept"
-                                                 Click="Rb_SubRule_Accept_Click">
-                                    </RadioButton>
-                                    <RadioButton Grid.Column="1"
-                                                 Grid.Row="1"
-                                                 Margin="3"
-                                                 Content="不符合"
-                                                 Style="{StaticResource DarkTheme}"
-                                                 Background="White"
-                                                 Tag="{Binding Content.SubRuleNumber}"
-                                                 Name="Rb_SubRule_Fail"
-                                                 Click="Rb_SubRule_Fail_Click">
-                                    </RadioButton>
-                                    <Button Grid.Column="2"
-                                            Grid.Row="1"
-                                            Grid.ColumnSpan="2"
-                                            Margin="2"
-                                            Style="{StaticResource ButtonHover}"
-                                            Tag="{Binding Content.SubRuleNumber}"
-                                            Name="Btn_Pictures"
-                                            Click="Btn_Pictures_Click">
-                                        <WrapPanel>
-                                            <TextBlock>圖片</TextBlock>
-                                            <TextBlock>(</TextBlock>
-                                            <TextBlock Text="{Binding Pictures.Count}"></TextBlock>
-                                            <TextBlock>)</TextBlock>
-                                        </WrapPanel>
-                                    </Button>
-                                </Grid>
-                            </GroupBox>
-                        </DataTemplate>
-                    </ItemsControl.Resources>
-                </ItemsControl>
-            </Grid>
-        </ScrollViewer>
-        
-        <GroupBox Header="檢測結果"
-                  Grid.Column="2"
-                  Grid.RowSpan="4"
-                  Margin="3"
-                  Style="{StaticResource DarkTheme}"
-                  Name="ResultPanel">
-            <StackPanel>
-                <Border BorderBrush="White"
-                        BorderThickness="1">
-                    <ItemsControl Name="SubRuleResults">
-                        <ItemsControl.Resources>
-                            <DataTemplate DataType="{x:Type local:SubRuleResult}">
-                                <TextBox Text="{Binding Text}"
-                                         TextWrapping="Wrap"
-                                         AcceptsReturn="True"
-                                         Height="Auto"
-                                         Margin="10"
-                                         Grid.Column="0"
-                                         Grid.ColumnSpan="4"
-                                         Grid.Row="0"
-                                         Style="{StaticResource DarkTheme}"
-                                         BorderThickness="0"/>
-                            </DataTemplate>
-                        </ItemsControl.Resources>
-                    </ItemsControl>
-                </Border>
-            </StackPanel>
-        </GroupBox>
-
-        
-        <Grid Margin="5"
-              Grid.Column="0"
-              Grid.RowSpan="4"
-              Grid.ColumnSpan="3"
-              Name="PictureGrid"
-              Visibility="{Binding IsPicturePanelShown, Converter={StaticResource VisibilityBoolConverter}}"
-              Background="#AA000000"
-              AllowDrop="True"
-              DragEnter="PicturesPanel_DragEnter"
-              DragDrop.Drop="PicturesPanel_Drop">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="4*" />
-                <ColumnDefinition Width="18*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+        <Grid
+            Name="NavBar"
+            Grid.RowSpan="4"
+            Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="*" MaxHeight="50" />
+                <RowDefinition Height="*" MaxHeight="50" />
+                <RowDefinition Height="*" MaxHeight="50" />
+                <RowDefinition Height="*" MaxHeight="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="Foreground" Value="White" />
-                    <Setter Property="Background" Value="#AA555555" />
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#FF333333" />
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="Gray" />
@@ -286,93 +87,593 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-                <Style TargetType="MenuItem">
-                    <Setter Property="IsEnabled" Value="True" />
-                    <Style.Triggers>
-                        <Trigger Property="Tag" Value="0">
-                            <Setter Property="IsEnabled" Value="False" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-                <ContextMenu x:Key="PicContextMenu">
-                    <MenuItem Header="上移一張"
-                              Name="CM_PicMoveUp"
-                              Tag="{Binding Index, Mode=OneWay}"
-                              Click="CM_PicMoveUp_Click"/>
-                    <MenuItem Header="下移一張"
-                              Name="CM_PicMoveDown"
-                              Tag="{Binding Index, Mode=OneWay}"
-                              Click="CM_PicMoveDown_Click"/>
-                    <Separator/>
-                    <MenuItem Header="刪除圖片"
-                              Name="CM_DeletePic"
-                              Tag="{Binding Index, Mode=OneWay}"
-                              Click="CM_DeletePic_Click"/>
-                </ContextMenu>
             </Grid.Resources>
-            
-            <Label Grid.Column="3"
-                   Content="+"
-                   FontWeight="Bold"
-                   FontSize="28"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   ToolTip="新增圖片"
-                   Name="AddPicture"
-                   MouseLeftButtonUp="AddPicture_MouseLeftButtonUp"/>
-
-            <Label Grid.Column="4"
-                   Content="×"
-                   FontWeight="Bold"
-                   FontSize="28"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   ToolTip="關閉頁面"
-                   Name="PictureClose"
-                   MouseLeftButtonUp="PictureClose_MouseLeftButtonUp"/>
-
-            <ScrollViewer Grid.Column="1"
-                          Grid.Row="1"
-                          HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Auto">
-                <ItemsControl Grid.Column="1"
-                              Grid.Row="1"
-                              AllowDrop="True"
-                              Name="PicturesPanel">
-                    <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type local:Picture}">
-                            <StackPanel Orientation="Vertical">
-                                <Image Source="{Binding FullPath, Mode=OneWay}"
-                                       Margin="5"
-                                       Tag="{Binding Index, Mode=OneWay}"
-                                       ContextMenu="{StaticResource PicContextMenu}"
-                                       Name="Thumbnail"
-                                       MouseLeftButtonUp="Thumbnail_MouseLeftButtonUp"/>
-
-
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.Resources>
-                </ItemsControl>
-            </ScrollViewer>
-            <Grid Grid.Row="0"
-                  Grid.RowSpan="2"
-                  Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="4*"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-                <Image Grid.Column="2"
-                       Grid.Row="0"
-                       Margin="5"
-                       Name="LargePicture"
-                       Source="{Binding CurrentSelectedPic.FullPath, Mode=OneWay}"/>
-                <TextBox Grid.Row="1"
-                         Margin="5"
-                         Style="{StaticResource DarkTheme}"
-                         Text="{Binding CurrentSelectedPic.Caption, Mode=TwoWay}"/>
-
-            </Grid>
+            <Button
+                Name="Btn_Save"
+                Grid.Row="0"
+                Grid.Column="0"
+                BorderBrush="White"
+                BorderThickness="2"
+                Command="{Binding SaveJsonFile}"
+                ToolTip="儲存進度">
+                <Image Source="/assets/pics/icon_save.png" />
+            </Button>
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                BorderBrush="White"
+                BorderThickness="2"
+                Command="{Binding NewReport}"
+                ToolTip="開新檔案">
+                <Image Source="/assets/pics/icon_new_file.png" />
+            </Button>
+            <Button
+                Grid.Row="2"
+                Grid.Column="0"
+                BorderBrush="White"
+                BorderThickness="2"
+                Command="{Binding LoadJsonFile}"
+                ToolTip="開啟舊檔">
+                <Image Source="/assets/pics/icon_open_file.png" />
+            </Button>
+            <Button
+                Grid.Row="3"
+                Grid.Column="0"
+                BorderBrush="White"
+                BorderThickness="2"
+                Command="{Binding BuildReport}"
+                ToolTip="輸出報告">
+                <Image Source="/assets/pics/icon_output.png" />
+            </Button>
         </Grid>
+
+        <TabControl
+            Name="Tabs"
+            Grid.RowSpan="8"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Background="#FF333333"
+            ItemsSource="{Binding TabItems}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <ei:CallMethodAction MethodName="TabsSelectionChanged" TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition MinHeight="10" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition MinWidth="10" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Column="0"
+                                Margin="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                UseLayoutRounding="True">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource CurrentOpenedFileToTabItemTextConverter}">
+                                        <Binding Path="Report.IsSaved" />
+                                        <Binding Path="Report.CurrentOpenedFile" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Button
+                                Grid.Column="1"
+                                MinWidth="15"
+                                MinHeight="15"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                BorderThickness="0"
+                                Command="{Binding Path=Data.CloseTab, Source={StaticResource proxy}}"
+                                CommandParameter="{Binding .}"
+                                FontWeight="Bold">
+                                ×
+                            </Button>
+                        </Grid>
+                    </WrapPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" MaxWidth="200" />
+                            <ColumnDefinition Width="6*" MaxWidth="450" />
+                            <ColumnDefinition Width="7*" MaxWidth="800" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+
+                        <!--  左側樹狀結構、分類選擇  -->
+                        <DockPanel Grid.RowSpan="4" Grid.Column="0">
+                            <Border
+                                BorderBrush="Ivory"
+                                BorderThickness="1"
+                                DockPanel.Dock="Top">
+                                <Grid Name="ClassSelector">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton
+                                        Name="Rb_Class1"
+                                        Grid.Column="0"
+                                        Content="甲級"
+                                        Foreground="Ivory"
+                                        GroupName="ClassSelector"
+                                        IsChecked="{Binding Report.Class, ConverterParameter=1, Converter={StaticResource ResultClassRadioBtnConverter}, Mode=OneWay}"
+                                        Tag="1">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction Command="{Binding ClassChanged}" CommandParameter="{Binding ElementName=Rb_Class1, Path=.}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </RadioButton>
+                                    <RadioButton
+                                        Name="Rb_Class2"
+                                        Grid.Column="1"
+                                        Content="乙級"
+                                        Foreground="Ivory"
+                                        GroupName="ClassSelector"
+                                        IsChecked="{Binding Report.Class, ConverterParameter=2, Converter={StaticResource ResultClassRadioBtnConverter}, Mode=OneWay}"
+                                        Tag="2">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction Command="{Binding ClassChanged}" CommandParameter="{Binding ElementName=Rb_Class2, Path=.}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </RadioButton>
+                                    <RadioButton
+                                        Name="Rb_Class3"
+                                        Grid.Column="2"
+                                        Content="丙級"
+                                        Foreground="Ivory"
+                                        GroupName="ClassSelector"
+                                        IsChecked="{Binding Report.Class, ConverterParameter=3, Converter={StaticResource ResultClassRadioBtnConverter}, Mode=OneWay}"
+                                        Tag="3">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction Command="{Binding ClassChanged}" CommandParameter="{Binding ElementName=Rb_Class3, Path=.}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </RadioButton>
+                                </Grid>
+                            </Border>
+                            <TreeView
+                                Name="trvMenu"
+                                DockPanel.Dock="Bottom"
+                                ItemsSource="{Binding TreeViewItems}"
+                                Style="{StaticResource DarkTheme}">
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="TreeViewItem">
+                                        <Setter Property="IsExpanded" Value="True" />
+                                        <Setter Property="Foreground" Value="Ivory" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedItemChanged">
+                                        <i:InvokeCommandAction Command="{Binding SelectedItemChanged}" CommandParameter="{Binding ElementName=trvMenu, Path=SelectedItem}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate DataType="{x:Type viewmodel:TreeViewItemsViewModel}" ItemsSource="{Binding Items}">
+                                        <Border BorderBrush="White" BorderThickness="{Binding IsBorderVisible, Mode=OneWay, Converter={StaticResource VisibilityNumberValueConverter}}">
+                                            <WrapPanel>
+
+                                                <TextBlock Text="{Binding Title}" />
+                                                <Image MaxHeight="15" Source="{Binding RuleResult.FinalResult, Mode=OneWay, Converter={StaticResource ResultStringIconConverter}}" />
+
+                                            </WrapPanel>
+                                        </Border>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </DockPanel>
+                        <!--  左側樹狀結構、分類選擇  -->
+
+                        <!--  中上方功能列  -->
+                        <GroupBox
+                            Grid.RowSpan="1"
+                            Grid.Column="1"
+                            Margin="5"
+                            Header="功能"
+                            Style="{StaticResource DarkTheme}">
+                            <GroupBox.Resources>
+                                <Style TargetType="GroupBox">
+                                    <Setter Property="DockPanel.Dock" Value="Top" />
+                                    <Setter Property="Margin" Value="5" />
+                                    <Setter Property="Foreground" Value="Ivory" />
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Setter Property="MinWidth" Value="250" />
+                                </Style>
+                            </GroupBox.Resources>
+                            <Grid Name="Condition">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="4*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBox
+                                    Grid.Row="0"
+                                    Grid.ColumnSpan="4"
+                                    AcceptsReturn="True"
+                                    Style="{StaticResource DarkTheme}"
+                                    Text="{Binding CurrentSelectedRule.Content.PassCondition, Mode=OneWay}"
+                                    TextWrapping="Wrap"
+                                    VerticalScrollBarVisibility="Auto" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding CurrentSelectedRule.FinalResult, Converter={StaticResource ResultStringConverter}}" />
+                                <Button
+                                    Name="Btn_Accept"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    BorderBrush="LightGreen"
+                                    Command="{Binding RuleAccepted}"
+                                    Content="符合"
+                                    Foreground="LightGreen"
+                                    Style="{StaticResource ButtonHover}"
+                                    Tag="1" />
+                                <Button
+                                    Name="Btn_Fail"
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    BorderBrush="#FFFF8888"
+                                    Command="{Binding RuleFailed}"
+                                    Content="不符合"
+                                    Foreground="#FFFF8888"
+                                    Style="{StaticResource ButtonHover}"
+                                    Tag="2" />
+                                <Button
+                                    Name="Btn_NotFit"
+                                    Grid.Row="1"
+                                    Grid.Column="3"
+                                    BorderBrush="LightGray"
+                                    Command="{Binding RuleNotfit}"
+                                    Content="不適用"
+                                    Foreground="LightGray"
+                                    Style="{StaticResource ButtonHover}"
+                                    Tag="3" />
+                            </Grid>
+                        </GroupBox>
+                        <!--  中上方功能列  -->
+
+                        <!--  基準區域  -->
+                        <ScrollViewer
+                            Grid.Row="1"
+                            Grid.RowSpan="3"
+                            Grid.Column="1"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource DarkTheme}"
+                            VerticalScrollBarVisibility="Auto">
+                            <Grid Margin="5">
+                                <Grid.Resources>
+                                    <Style TargetType="GroupBox">
+                                        <Setter Property="DockPanel.Dock" Value="Top" />
+                                        <Setter Property="Margin" Value="3" />
+                                        <Setter Property="Foreground" Value="Ivory" />
+                                        <Setter Property="Height" Value="Auto" />
+                                        <Setter Property="MinHeight" Value="130" />
+                                        <Setter Property="MinWidth" Value="250" />
+                                    </Style>
+                                </Grid.Resources>
+
+                                <ItemsControl
+                                    Name="SubRules"
+                                    ItemsSource="{Binding SubRulesList}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    Style="{StaticResource DarkTheme}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <GroupBox Width="Auto" Style="{StaticResource DarkTheme}">
+                                                <GroupBox.Header>
+                                                    <WrapPanel>
+                                                        <TextBlock>基準(</TextBlock>
+                                                        <TextBlock Text="{Binding SubRuleNumber, Mode=OneWay}" />
+                                                        <TextBlock>)</TextBlock>
+                                                    </WrapPanel>
+                                                </GroupBox.Header>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="5*" />
+                                                        <RowDefinition Height="1*" />
+                                                    </Grid.RowDefinitions>
+                                                    <TextBox
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Grid.ColumnSpan="4"
+                                                        Height="Auto"
+                                                        Margin="3"
+                                                        AcceptsReturn="True"
+                                                        IsReadOnly="True"
+                                                        Style="{StaticResource DarkTheme}"
+                                                        Text="{Binding Description, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
+                                                    <RadioButton
+                                                        Name="Rb_SubRule_Accept"
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Margin="3"
+                                                        Background="White"
+                                                        Content="符合"
+                                                        IsChecked="{Binding SubRule.Result, Converter={StaticResource ResultStringBoolConverter}, ConverterParameter=accept}"
+                                                        Style="{StaticResource DarkTheme}">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding SubRuleResultChanged}" CommandParameter="{Binding ElementName=Rb_SubRule_Accept, Path=.}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </RadioButton>
+                                                    <RadioButton
+                                                        Name="Rb_SubRule_Fail"
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Margin="3"
+                                                        Background="White"
+                                                        Content="不符合"
+                                                        IsChecked="{Binding SubRule.Result, Converter={StaticResource ResultStringBoolConverter}, ConverterParameter=fail}"
+                                                        Style="{StaticResource DarkTheme}">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding SubRuleResultChanged}" CommandParameter="{Binding ElementName=Rb_SubRule_Fail, Path=.}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </RadioButton>
+                                                    <Button
+                                                        Name="Btn_Pictures"
+                                                        Grid.Row="1"
+                                                        Grid.Column="2"
+                                                        Grid.ColumnSpan="2"
+                                                        Margin="2"
+                                                        Command="{Binding PictureButtonClick}"
+                                                        Style="{StaticResource ButtonHover}">
+                                                        <WrapPanel>
+                                                            <TextBlock>圖片</TextBlock>
+                                                            <TextBlock>(</TextBlock>
+                                                            <TextBlock Text="{Binding SubRule.Pictures.Count}" />
+                                                            <TextBlock>)</TextBlock>
+                                                        </WrapPanel>
+                                                    </Button>
+                                                </Grid>
+                                            </GroupBox>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </ScrollViewer>
+                        <!--  基準區域結尾  -->
+
+                        <!--  右側檢測文字編輯區  -->
+                        <ScrollViewer
+                            Grid.RowSpan="4"
+                            Grid.Column="3"
+                            Margin="3"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto">
+                            <GroupBox
+                                Name="ResultPanel"
+                                Header="檢測結果"
+                                Style="{StaticResource DarkTheme}">
+                                <StackPanel>
+                                    <Border BorderBrush="White" BorderThickness="1">
+                                        <ItemsControl Name="SubRuleResults" ItemsSource="{Binding CurrentSelectedRule.SubRuleList}">
+                                            <ItemsControl.Resources>
+                                                <DataTemplate DataType="{x:Type local:SubRuleResult}">
+                                                    <TextBox
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Grid.ColumnSpan="4"
+                                                        Height="Auto"
+                                                        Margin="10"
+                                                        AcceptsReturn="True"
+                                                        BorderThickness="0"
+                                                        Style="{StaticResource DarkTheme}"
+                                                        Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </ItemsControl.Resources>
+                                        </ItemsControl>
+                                    </Border>
+                                </StackPanel>
+                            </GroupBox>
+                        </ScrollViewer>
+                        <!--  右側檢測文字編輯區結尾  -->
+
+                        <!--  圖片  -->
+                        <Grid
+                            Name="PictureGrid"
+                            Grid.RowSpan="4"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="4"
+                            Margin="5"
+                            AllowDrop="True"
+                            Background="#AA000000"
+                            Tag="{Binding CurrentSelectedSubRule}"
+                            Visibility="{Binding IsPicturePanelShown, Converter={StaticResource VisibilityBoolConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="18*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="15*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Background" Value="#AA555555" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Gray" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style TargetType="MenuItem">
+                                    <Setter Property="IsEnabled" Value="True" />
+                                    <Style.Triggers>
+                                        <Trigger Property="Tag" Value="0">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Resources>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="DragEnter">
+                                    <ei:CallMethodAction MethodName="PicturePanelDragEnter" TargetObject="{Binding}" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Drop">
+                                    <ei:CallMethodAction MethodName="PicturePanelDrop" TargetObject="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+
+                            <Label
+                                Name="AddPicture"
+                                Grid.Column="3"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="+"
+                                FontSize="28"
+                                FontWeight="Bold"
+                                ToolTip="新增圖片">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseUp">
+                                        <i:InvokeCommandAction Command="{Binding AddPicture}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Label>
+                            <Label
+                                Name="PictureClose"
+                                Grid.Column="4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="×"
+                                FontSize="28"
+                                FontWeight="Bold"
+                                ToolTip="關閉頁面">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseUp">
+                                        <i:InvokeCommandAction Command="{Binding ClosePicturePanel}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Label>
+
+                            <ScrollViewer
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                VerticalScrollBarVisibility="Auto">
+                                <ItemsControl
+                                    Name="PicturesPanel"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    AllowDrop="True"
+                                    ItemsSource="{Binding CurrentSelectedSubRule.Pictures}"
+                                    Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+                                    <ItemsControl.Resources>
+                                        <local:BindingProxy x:Key="proxy2" Data="{Binding .}" />
+                                    </ItemsControl.Resources>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Image
+                                                Name="Thumbnail"
+                                                Margin="5"
+                                                Source="{Binding FullPath, Mode=OneWay, Converter={StaticResource UriToCachedImageConverter}}"
+                                                Tag="{Binding .}">
+                                                <Image.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem
+                                                            Name="CM_PicMoveUp"
+                                                            Command="{Binding Path=Data.PictureMoveUp, Source={StaticResource proxy2}}"
+                                                            CommandParameter="{Binding .}"
+                                                            Header="上移一張"
+                                                            Tag="{Binding Index}" />
+                                                        <MenuItem
+                                                            Name="CM_PicMoveDown"
+                                                            Command="{Binding Path=Data.PictureMoveDown, Source={StaticResource proxy2}}"
+                                                            CommandParameter="{Binding .}"
+                                                            Header="下移一張" />
+                                                        <Separator />
+                                                        <MenuItem
+                                                            Name="CM_DeletePic"
+                                                            Command="{Binding Path=Data.PictureDeleted, Source={StaticResource proxy2}}"
+                                                            CommandParameter="{Binding .}"
+                                                            Header="刪除圖片" />
+                                                    </ContextMenu>
+                                                </Image.ContextMenu>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MouseDown">
+                                                        <i:InvokeCommandAction Command="{Binding Path=Data.ThumbnailClicked, Source={StaticResource proxy2}}" CommandParameter="{Binding ElementName=Thumbnail, Path=Tag}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Image>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                            <Grid
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="4*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <Image
+                                    Name="LargePicture"
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Source="{Binding CurrentSelectedPic.FullPath, Mode=OneWay, Converter={StaticResource UriToCachedImageConverter}}" />
+                                <TextBox
+                                    Grid.Row="1"
+                                    Margin="5"
+                                    Style="{StaticResource DarkTheme}"
+                                    Text="{Binding CurrentSelectedPic.Caption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+
+
+
     </Grid>
 </Window>
