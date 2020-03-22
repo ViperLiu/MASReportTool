@@ -174,13 +174,13 @@
     <Content Include="assets\基準30.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\***REMOVED***">
+    <Content Include="assets\數聯資安MAS報告範本-丙類.DOCX">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\***REMOVED***">
+    <Content Include="assets\數聯資安MAS報告範本-乙類.DOCX">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\***REMOVED***">
+    <Content Include="assets\數聯資安MAS報告範本-甲類.DOCX">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

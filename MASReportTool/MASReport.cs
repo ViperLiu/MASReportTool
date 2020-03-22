@@ -13,9 +13,9 @@ namespace MASReportTool
     {
         
 
-        private readonly static string L1Template = "***REMOVED***";
-        private readonly static string L2Template = "***REMOVED***";
-        private readonly static string L3TemplateC = "***REMOVED***";
+        private readonly static string L1Template = "TemplateA.docx";
+        private readonly static string L2Template = "TemplateB.docx";
+        private readonly static string L3TemplateC = "TemplateC.docx";
         private readonly static string Font = "標楷體";
         private readonly static string ResultTableTitle = "檢測基準";
         private readonly static string OverviewTableTitle = "技術要求";
